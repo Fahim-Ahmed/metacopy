@@ -53,6 +53,8 @@ namespace MetaCopy.Components
 
             Padding = new Padding(1);
             Size = panel.Size;
+
+            this.SendToBack();
         }
 
         public Color DefaultBorderColor { get; set; }
@@ -60,6 +62,10 @@ namespace MetaCopy.Components
 
         public void SelectAll(){
             textBox.SelectAll();
+        }
+
+        public void hideTextbox(){
+            textBox.Visible = false;
         }
 
         public override string Text
@@ -79,10 +85,5 @@ namespace MetaCopy.Components
             BackColor = Color.FromArgb(255, 49, 54, 61);
             base.OnLeave(e);
         }
-
-//        protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
-//        {
-//            base.SetBoundsCore(x, y, width, panel.Height, specified);
-//        }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using System.Runtime.InteropServices;
+using GlacialComponents.Controls;
 
 namespace MetaCopy
 {
@@ -19,6 +21,11 @@ namespace MetaCopy
         public Form1()
         {
             InitializeComponent();
+
+            borderedPanel1.hideTextbox();
+            glacialList.BringToFront();
+
+            FileObject fo = new FileObject("bleh", "x:/asdsa/asds", false);
         }
 
         void panel1_DragEnter(object sender, DragEventArgs e)
@@ -32,7 +39,18 @@ namespace MetaCopy
             {
                 string[] files = (string[]) e.Data.GetData(DataFormats.FileDrop);
                 foreach (string filePath in files){
-                    Console.WriteLine(filePath);
+                    GLItem item = glacialList.Items.Add(Path.GetFileName(filePath));
+                    item.ForeColor = Color.FromArgb(255, 141, 151, 166);
+                    item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
+
+                    GLSubItem si = item.SubItems[0];
+                    si.ChangedEvent += (source, args) =>{
+                        GLSubItem sub = (GLSubItem) source;
+                        Console.WriteLine(sub.Checked);
+                    };
+
+                    item.SubItems[1].Text = filePath;
+                    item.SubItems[1].ForeColor = Color.FromArgb(255, 141, 151, 166);
                 }
             }
         }

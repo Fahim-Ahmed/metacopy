@@ -29,16 +29,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            MetaCopy.Components.CustomLabel customLabel1;
             System.Windows.Forms.Label label1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            MetaCopy.Components.CustomLabel customLabel1;
+            MetaCopy.Components.BorderedPanel borderedPanel2;
+            GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             this.panelTitle = new System.Windows.Forms.Panel();
-            this.borderedPanel1 = new MetaCopy.Components.BorderedPanel();
             this.btnOpenPath = new System.Windows.Forms.Button();
-            customLabel1 = new MetaCopy.Components.CustomLabel();
+            this.borderedPanel1 = new MetaCopy.Components.BorderedPanel();
+            this.glacialList = new GlacialComponents.Controls.GlacialList();
             label1 = new System.Windows.Forms.Label();
+            customLabel1 = new MetaCopy.Components.CustomLabel();
+            borderedPanel2 = new MetaCopy.Components.BorderedPanel();
             this.panelTitle.SuspendLayout();
+            borderedPanel2.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            label1.Location = new System.Drawing.Point(48, 66);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(87, 20);
+            label1.TabIndex = 2;
+            label1.Text = "Source Path";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panelTitle
             // 
@@ -46,20 +64,35 @@
             this.panelTitle.Controls.Add(customLabel1);
             this.panelTitle.Location = new System.Drawing.Point(0, 0);
             this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(640, 48);
+            this.panelTitle.Size = new System.Drawing.Size(640, 32);
             this.panelTitle.TabIndex = 0;
             this.panelTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_MouseMove);
             // 
+            // btnOpenPath
+            // 
+            this.btnOpenPath.BackColor = System.Drawing.Color.Transparent;
+            this.btnOpenPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnOpenPath.FlatAppearance.BorderSize = 0;
+            this.btnOpenPath.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.btnOpenPath.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnOpenPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenPath.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenPath.Image")));
+            this.btnOpenPath.Location = new System.Drawing.Point(560, 62);
+            this.btnOpenPath.Name = "btnOpenPath";
+            this.btnOpenPath.Size = new System.Drawing.Size(26, 26);
+            this.btnOpenPath.TabIndex = 3;
+            this.btnOpenPath.UseVisualStyleBackColor = false;
+            // 
             // customLabel1
             // 
-            customLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            customLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
+            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
             customLabel1.Location = new System.Drawing.Point(0, 0);
             customLabel1.Name = "customLabel1";
-            customLabel1.Size = new System.Drawing.Size(640, 48);
+            customLabel1.Size = new System.Drawing.Size(120, 32);
             customLabel1.TabIndex = 0;
-            customLabel1.Text = "MetaCopy";
+            customLabel1.Text = "METACOPY";
             customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             // 
@@ -74,28 +107,79 @@
             this.borderedPanel1.Size = new System.Drawing.Size(410, 32);
             this.borderedPanel1.TabIndex = 1;
             // 
-            // label1
+            // borderedPanel2
             // 
-            label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            label1.Location = new System.Drawing.Point(48, 66);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(90, 18);
-            label1.TabIndex = 2;
-            label1.Text = "Source Path";
-            label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            borderedPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
+            borderedPanel2.Controls.Add(this.glacialList);
+            borderedPanel2.DefaultBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
+            borderedPanel2.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
+            borderedPanel2.Location = new System.Drawing.Point(52, 114);
+            borderedPanel2.Name = "borderedPanel2";
+            borderedPanel2.Padding = new System.Windows.Forms.Padding(1);
+            borderedPanel2.Size = new System.Drawing.Size(534, 353);
+            borderedPanel2.TabIndex = 5;
             // 
-            // btnOpenPath
+            // glacialList
             // 
-            this.btnOpenPath.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOpenPath.BackgroundImage")));
-            this.btnOpenPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnOpenPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOpenPath.Location = new System.Drawing.Point(560, 60);
-            this.btnOpenPath.Name = "btnOpenPath";
-            this.btnOpenPath.Size = new System.Drawing.Size(32, 32);
-            this.btnOpenPath.TabIndex = 3;
-            this.btnOpenPath.UseVisualStyleBackColor = true;
+            this.glacialList.AllowColumnResize = true;
+            this.glacialList.AllowDrop = true;
+            this.glacialList.AllowMultiselect = true;
+            this.glacialList.AlternateBackground = System.Drawing.Color.DarkGreen;
+            this.glacialList.AlternatingColors = false;
+            this.glacialList.AutoHeight = true;
+            this.glacialList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
+            this.glacialList.BackgroundStretchToFit = true;
+            glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn1.CheckBoxes = true;
+            glColumn1.ImageIndex = -1;
+            glColumn1.Name = "filename";
+            glColumn1.NumericSort = false;
+            glColumn1.Text = "Name";
+            glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            glColumn1.Width = 140;
+            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn2.CheckBoxes = false;
+            glColumn2.ImageIndex = -1;
+            glColumn2.Name = "path";
+            glColumn2.NumericSort = false;
+            glColumn2.Text = "Path";
+            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            glColumn2.Width = 385;
+            this.glacialList.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
+            glColumn1,
+            glColumn2});
+            this.glacialList.ControlStyle = GlacialComponents.Controls.GLControlStyles.SuperFlat;
+            this.glacialList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.glacialList.FullRowSelect = true;
+            this.glacialList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
+            this.glacialList.GridLines = GlacialComponents.Controls.GLGridLines.gridVertical;
+            this.glacialList.GridLineStyle = GlacialComponents.Controls.GLGridLineStyles.gridSolid;
+            this.glacialList.GridTypes = GlacialComponents.Controls.GLGridTypes.gridOnExists;
+            this.glacialList.HeaderHeight = 24;
+            this.glacialList.HeaderVisible = true;
+            this.glacialList.HeaderWordWrap = false;
+            this.glacialList.HotColumnTracking = false;
+            this.glacialList.HotItemTracking = true;
+            this.glacialList.HotTrackingColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.glacialList.HoverEvents = false;
+            this.glacialList.HoverTime = 1;
+            this.glacialList.ImageList = null;
+            this.glacialList.ItemHeight = 17;
+            this.glacialList.ItemWordWrap = false;
+            this.glacialList.Location = new System.Drawing.Point(4, 4);
+            this.glacialList.Name = "glacialList";
+            this.glacialList.Selectable = true;
+            this.glacialList.SelectedTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
+            this.glacialList.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.glacialList.ShowBorder = false;
+            this.glacialList.ShowFocusRect = false;
+            this.glacialList.Size = new System.Drawing.Size(526, 345);
+            this.glacialList.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
+            this.glacialList.SuperFlatHeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
+            this.glacialList.TabIndex = 4;
+            this.glacialList.Text = "glacialList1";
+            this.glacialList.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.glacialList.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // Form1
             // 
@@ -108,12 +192,14 @@
             this.Controls.Add(label1);
             this.Controls.Add(this.panelTitle);
             this.Controls.Add(this.borderedPanel1);
+            this.Controls.Add(borderedPanel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(640, 720);
             this.MinimumSize = new System.Drawing.Size(640, 720);
             this.Name = "Form1";
             this.panelTitle.ResumeLayout(false);
+            borderedPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -124,6 +210,7 @@
         private System.Windows.Forms.Panel panelTitle;
         private Components.BorderedPanel borderedPanel1;
         private System.Windows.Forms.Button btnOpenPath;
+        private GlacialComponents.Controls.GlacialList glacialList;
     }
 }
 
