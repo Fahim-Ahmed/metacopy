@@ -74,6 +74,9 @@
     <Compile Include="Components\BorderedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Components\CustomButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Components\CustomLabel.cs">
       <SubType>Component</SubType>
     </Compile>
