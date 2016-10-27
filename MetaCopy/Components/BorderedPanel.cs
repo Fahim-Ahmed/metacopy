@@ -25,7 +25,7 @@ namespace MetaCopy.Components
 
             textBox = new TextBox(){
                 BorderStyle = BorderStyle.None,
-                Location = new Point(8, 6),
+                Location = new Point(151, 60),
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom |
                          AnchorStyles.Left | AnchorStyles.Right,
 
@@ -43,9 +43,11 @@ namespace MetaCopy.Components
                 //Visible = false
             };
             
-            container.Controls.Add(textBox);
             container.Controls.Add(panel);
-            this.Controls.Add(container);
+            container.Controls.Add(textBox);
+            Controls.Add(container);
+
+            textBox.Text = "baslal";
 
             DefaultBorderColor = Color.FromArgb(255, 49, 54, 61);
             FocusedBorderColor = Color.FromArgb(255, 49, 54, 61);

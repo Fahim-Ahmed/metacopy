@@ -16,16 +16,22 @@ namespace MetaCopy
 {
     public partial class Form1 : Form
     {
+        private const int WM_NCHITTEST = 0x84;
+        private const int HT_CLIENT = 0x1;
+        private const int HT_CAPTION = 0x2;
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
         public Form1()
         {
             InitializeComponent();
 
-            borderedPanel1.hideTextbox();
-
             glacialList.BringToFront();
             glacialListPath.BringToFront();
-
-            MouseWheel += (s, e) => glacialList.vPanelScrollBar.Focus();
         }
 
         void panel1_DragEnter(object sender, DragEventArgs e)
@@ -38,18 +44,7 @@ namespace MetaCopy
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[]) e.Data.GetData(DataFormats.FileDrop);
-                foreach (string filePath in files){
-
-                    if(hasThisFile(filePath)) continue;
-
-                    GLItem item = glacialList.Items.Add(Path.GetFileName(filePath));
-                    item.ForeColor = Color.FromArgb(255, 141, 151, 166);
-                    item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
-                    item.SubItems[0].Checked = true;
-                    
-                    item.SubItems[1].Text = filePath;
-                    item.SubItems[1].ForeColor = Color.FromArgb(255, 141, 151, 166);
-                }
+                addFilesToList(files);
             }
         }
 
@@ -60,6 +55,19 @@ namespace MetaCopy
             foreach (GLItem item in glacialList.Items)
             {
                 if (item.SubItems[1].Text == path)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool hasThisPath(string path)
+        {
+            if (glacialListPath.Items.Count == 0) return false;
+
+            foreach (GLItem item in glacialListPath.Items)
+            {
+                if (item.SubItems[0].Text == path)
                     return true;
             }
 
@@ -111,16 +119,6 @@ namespace MetaCopy
             if (m.Msg == WM_NCHITTEST)
                 m.Result = (IntPtr)(HT_CAPTION);
         }
-
-        private const int WM_NCHITTEST = 0x84;
-        private const int HT_CLIENT = 0x1;
-        private const int HT_CAPTION = 0x2;
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-
-        [DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
 
         private void glacialList_ItemChangedEvent(object source, ChangedEventArgs e){
             if (e.ChangedType == ChangedTypes.SelectionChanged || e.ChangedType == ChangedTypes.SubItemChanged){
@@ -221,18 +219,41 @@ namespace MetaCopy
                 string[] files = Directory.GetFiles(fbd.SelectedPath);
                 //MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
 
-                foreach (string filePath in files) {
+                Button btn = (Button) sender;
 
-                    if (hasThisFile(filePath)) continue;
+                switch (btn.Name){
+                    case "btnOpenPath":
+                        addFilesToList(files);
+                        pathLabel.Text = fbd.SelectedPath.ToLower();
+                        break;
+                    case "btnAddDestPath":
+                        if (hasThisPath(fbd.SelectedPath)) break;
 
-                    GLItem item = glacialList.Items.Add(Path.GetFileName(filePath));
-                    item.ForeColor = Color.FromArgb(255, 141, 151, 166);
-                    item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
-                    item.SubItems[0].Checked = true;
+                        GLItem item = new GLItem();
+                        item.ForeColor = Color.FromArgb(255, 141, 151, 166);
+                        item.SubItems[0].Text = fbd.SelectedPath;
+                        item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
+                        glacialListPath.Items.Add(item);
 
-                    item.SubItems[1].Text = filePath;
-                    item.SubItems[1].ForeColor = Color.FromArgb(255, 141, 151, 166);
+                        item.SubItems[0].Checked = true;
+                        glacialListPath.Refresh();
+                        break;
                 }
+            }
+        }
+
+        public void addFilesToList(string[] files){
+            foreach (string filePath in files)
+            {
+                if (hasThisFile(filePath)) continue;
+
+                GLItem item = glacialList.Items.Add(Path.GetFileName(filePath));
+                item.ForeColor = Color.FromArgb(255, 141, 151, 166);
+                item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
+                item.SubItems[0].Checked = true;
+
+                item.SubItems[1].Text = filePath;
+                item.SubItems[1].ForeColor = Color.FromArgb(255, 141, 151, 166);
             }
         }
 
@@ -240,11 +261,41 @@ namespace MetaCopy
             Application.Exit();
         }
 
-        private void onEnter(object sender, EventArgs e)
-        {
-            glacialList.Focus();
-            Console.WriteLine(glacialList.Focused);
+        private void onPaint(object sender, PaintEventArgs e){
+            Panel p = (Panel) sender;
+            ControlPaint.DrawBorder(e.Graphics, p.ClientRectangle, Color.FromArgb(255, 49, 54, 61), ButtonBorderStyle.Solid);
+        }
 
+        private void onPanelResize(object sender, EventArgs e)
+        {
+            Invalidate();
+        }
+
+        private void clearWatchPath(object sender, EventArgs e){
+            pathLabel.Text = "add a watch folder";
+        }
+
+        private void onPathButton(object sender, EventArgs e){
+            Button btn = (Button) sender;
+
+            switch (btn.Name){
+                case "btnRem":
+                    for (int i = 0; i < glacialListPath.Items.Count; i++)
+                    {
+                        GLItem item = glacialListPath.Items[i];
+                        if (item.SubItems[0].Checked)
+                        {
+                            glacialListPath.Items.RemoveAt(i);
+                            glacialListPath.Refresh();
+                            i = 0;
+                        }
+                    }
+                    break;
+                case "btnRemAll":
+                    glacialListPath.Items.Clear();
+                    glacialListPath.Refresh();
+                    break;
+            }
         }
     }
 }
