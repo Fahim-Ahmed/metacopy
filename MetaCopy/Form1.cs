@@ -9,21 +9,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MaterialSkin;
-using MaterialSkin.Controls;
 using System.Runtime.InteropServices;
 using GlacialComponents.Controls;
 
 namespace MetaCopy
 {
-    public partial class Form1 : Form //: MaterialForm
+    public partial class Form1 : Form
     {
         public Form1()
         {
             InitializeComponent();
 
             borderedPanel1.hideTextbox();
+
             glacialList.BringToFront();
+            glacialListPath.BringToFront();
+
+            MouseWheel += (s, e) => glacialList.vPanelScrollBar.Focus();
         }
 
         void panel1_DragEnter(object sender, DragEventArgs e)
@@ -37,15 +39,31 @@ namespace MetaCopy
             {
                 string[] files = (string[]) e.Data.GetData(DataFormats.FileDrop);
                 foreach (string filePath in files){
+
+                    if(hasThisFile(filePath)) continue;
+
                     GLItem item = glacialList.Items.Add(Path.GetFileName(filePath));
                     item.ForeColor = Color.FromArgb(255, 141, 151, 166);
                     item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
-               //     item.SubItems[0].Checked = true;
+                    item.SubItems[0].Checked = true;
                     
                     item.SubItems[1].Text = filePath;
                     item.SubItems[1].ForeColor = Color.FromArgb(255, 141, 151, 166);
                 }
             }
+        }
+
+        private bool hasThisFile(string path)
+        {
+            if (glacialList.Items.Count == 0) return false;
+
+            foreach (GLItem item in glacialList.Items)
+            {
+                if (item.SubItems[1].Text == path)
+                    return true;
+            }
+
+            return false;
         }
 
         private void setSelectedColor(GLSubItem sub){
@@ -65,6 +83,25 @@ namespace MetaCopy
             {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        private void setStatus(string msg, int type)
+        {
+            switch (type)
+            {
+                case 0: // normal
+                    labelStat.Text = msg;
+                    labelStat.ForeColor = Color.FromArgb(255, 141, 151, 166);
+                    break;
+                case 1: // success
+                    labelStat.Text = msg;
+                    labelStat.ForeColor = Color.FromArgb(255, 27, 221, 151);
+                    break;
+                case 2: // warning
+                    labelStat.Text = msg;
+                    labelStat.ForeColor = Color.FromArgb(255, 246, 84, 110);
+                    break;
             }
         }
 
@@ -100,6 +137,25 @@ namespace MetaCopy
 
                     glacialList.SelectedTextColor = Color.FromArgb(255, 141, 151, 166);
                     glacialList.SelectionColor = Color.FromArgb(255, 29, 34, 41);
+                }
+            }
+        }
+
+        private void glacialListPath_ItemChangedEvent(object source, ChangedEventArgs e) {
+            if (e.ChangedType == ChangedTypes.SelectionChanged || e.ChangedType == ChangedTypes.SubItemChanged) {
+                if (e.Item.SubItems[0].Checked) {
+                    setSelectedColor(e.Item.SubItems[0]);
+                    setSelectedColor(e.Item.SubItems[1]);
+
+                    glacialListPath.SelectedTextColor = Color.FromArgb(255, 36, 42, 52);
+                    glacialListPath.SelectionColor = Color.FromArgb(255, 242, 208, 59);
+                }
+                else {
+                    setDefaultColor(e.Item.SubItems[0]);
+                    setDefaultColor(e.Item.SubItems[1]);
+
+                    glacialListPath.SelectedTextColor = Color.FromArgb(255, 141, 151, 166);
+                    glacialListPath.SelectionColor = Color.FromArgb(255, 29, 34, 41);
                 }
             }
         }
@@ -155,6 +211,40 @@ namespace MetaCopy
                     glacialList.Refresh();
                     break;
             }
+        }
+
+        private void openFolder(object sender, EventArgs e) {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            DialogResult result = fbd.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
+                string[] files = Directory.GetFiles(fbd.SelectedPath);
+                //MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
+
+                foreach (string filePath in files) {
+
+                    if (hasThisFile(filePath)) continue;
+
+                    GLItem item = glacialList.Items.Add(Path.GetFileName(filePath));
+                    item.ForeColor = Color.FromArgb(255, 141, 151, 166);
+                    item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
+                    item.SubItems[0].Checked = true;
+
+                    item.SubItems[1].Text = filePath;
+                    item.SubItems[1].ForeColor = Color.FromArgb(255, 141, 151, 166);
+                }
+            }
+        }
+
+        private void closeApp(object sender, EventArgs e) {
+            Application.Exit();
+        }
+
+        private void onEnter(object sender, EventArgs e)
+        {
+            glacialList.Focus();
+            Console.WriteLine(glacialList.Focused);
+
         }
     }
 }

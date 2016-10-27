@@ -1,6 +1,5 @@
 ﻿using System.Drawing.Text;
 using System.Windows.Forms;
-using MaterialSkin.Controls;
 
 namespace MetaCopy.Components
 {
