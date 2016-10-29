@@ -26,12 +26,70 @@ namespace MetaCopy
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
+        private FileSystemWatcher watcher;
+        private string watchPath;
+
         public Form1()
         {
             InitializeComponent();
 
             glacialList.BringToFront();
             glacialListPath.BringToFront();
+
+            watcher = new FileSystemWatcher();
+        }
+
+        private void startWatch(string path)
+        {
+            watcher.Path = path;
+            watcher.NotifyFilter = NotifyFilters.Size | NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            watcher.Filter = "*.*";
+            watcher.Changed += OnDirectoryChanged;
+            watcher.Deleted += OnDirectoryChanged;
+            watcher.Created += OnDirectoryChanged;
+            watcher.Renamed += OnDirectoryChanged;
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void removeWatch(){
+            watcher.Changed -= OnDirectoryChanged;
+            watcher.Deleted -= OnDirectoryChanged;
+            watcher.Created -= OnDirectoryChanged;
+            watcher.Renamed -= OnDirectoryChanged;
+
+            pathLabel.Text = "add a watch folder";
+        }
+
+        private void checkExistence(){
+            for(int i = 0; i < glacialList.Items.Count; i++){
+                GLItem item = glacialList.Items[i];
+                string path = item.SubItems[1].Text;
+
+                if (!File.Exists(item.SubItems[1].Text)){
+
+                    try{
+                        if (File.GetAttributes(path).HasFlag(FileAttributes.Directory)){
+                            //Exist
+                            continue;
+                        }
+                    }
+                    catch (FileNotFoundException ex){
+                        //Don't exist
+                    }
+
+                    glacialList.Items.Remove(item);
+                    glacialList.Refresh();
+                    i = 0;
+                }
+            }
+        }
+
+        private void OnDirectoryChanged(object sender, FileSystemEventArgs e){
+            addFilesToList(Directory.GetDirectories(watchPath));
+            addFilesToList(Directory.GetFiles(watchPath));
+            checkExistence();
+
+            setStatus("Directory structure changed. File list updated.", 1);
         }
 
         void panel1_DragEnter(object sender, DragEventArgs e)
@@ -207,6 +265,8 @@ namespace MetaCopy
                 case "Remove All":
                     glacialList.Items.Clear();
                     glacialList.Refresh();
+                    removeWatch();
+                    setStatus("Watch removed.", 0);
                     break;
             }
         }
@@ -217,14 +277,22 @@ namespace MetaCopy
 
             if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
                 string[] files = Directory.GetFiles(fbd.SelectedPath);
+                string[] dir = Directory.GetDirectories(fbd.SelectedPath);
+
                 //MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
 
                 Button btn = (Button) sender;
 
                 switch (btn.Name){
+                    case "pathLabel":
                     case "btnOpenPath":
+                        addFilesToList(dir);
                         addFilesToList(files);
                         pathLabel.Text = fbd.SelectedPath.ToLower();
+
+                        startWatch(fbd.SelectedPath);
+                        watchPath = fbd.SelectedPath;
+
                         break;
                     case "btnAddDestPath":
                         if (hasThisPath(fbd.SelectedPath)) break;
@@ -272,7 +340,8 @@ namespace MetaCopy
         }
 
         private void clearWatchPath(object sender, EventArgs e){
-            pathLabel.Text = "add a watch folder";
+            removeWatch();
+            setStatus("Watch removed.", 0);
         }
 
         private void onPathButton(object sender, EventArgs e){
