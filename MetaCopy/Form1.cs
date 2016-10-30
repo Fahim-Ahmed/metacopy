@@ -257,10 +257,15 @@ namespace MetaCopy
                         GLItem item = glacialList.Items[i];
                         if (item.SubItems[0].Checked){
                             glacialList.Items.RemoveAt(i);
-                            glacialList.Refresh();
                             i = 0;
                         }
                     }
+
+                    if (glacialList.Items.Count > 0)
+                        if (glacialList.Items[0].SubItems[0].Checked == true) glacialList.Items.RemoveAt(0);
+
+                    glacialList.Refresh();
+
                     break;
                 case "Remove All":
                     glacialList.Items.Clear();
@@ -281,7 +286,7 @@ namespace MetaCopy
 
                 //MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
 
-                Button btn = (Button) sender;
+                Control btn = (Control) sender;
 
                 switch (btn.Name){
                     case "pathLabel":
@@ -359,11 +364,57 @@ namespace MetaCopy
                             i = 0;
                         }
                     }
+
+                    if (glacialListPath.Items.Count > 0)
+                        if(glacialListPath.Items[0].SubItems[0].Checked == true) glacialListPath.Items.RemoveAt(0);
+
+                    glacialListPath.Refresh();
+
                     break;
                 case "btnRemAll":
                     glacialListPath.Items.Clear();
                     glacialListPath.Refresh();
                     break;
+            }
+        }
+
+        private void doCopy(object sender, EventArgs e)
+        {
+            int tickCount = 0;
+            foreach (GLItem item in glacialList.Items)
+                if (item.SubItems[0].Checked) tickCount++;
+
+            if(glacialListPath.Items.Count == 0)
+                setStatus("Your life is pointless, so are your files.", 2);
+            else if(glacialList.Items.Count == 0)
+                setStatus("You have nothing in your life, not even a mere file.", 2);
+            else if(tickCount == 0)
+                setStatus("Uhh... what is your plan exactly?", 2);
+
+            foreach (GLItem path in glacialListPath.Items)
+            {
+                foreach (GLItem item in glacialList.Items)
+                {
+                    string filename = item.SubItems[0].Text;
+                    string sourcePath = item.SubItems[1].Text;
+                    string destPath = path.SubItems[0].Text;
+                    string destFile= Path.Combine(path.SubItems[0].Text, filename);
+
+                    try
+                    {
+                        if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        MessageBox.Show("Can't create folder.", "Error");
+                        setStatus("Failure. Permission denied. You are.", 2);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        MessageBox.Show("Invalid path.", "Error");
+                        setStatus("Operation terminated.", 2);
+                    }
+                }
             }
         }
     }

@@ -33,9 +33,9 @@ namespace MetaCopy
         {
             System.Windows.Forms.Label label1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            GlacialComponents.Controls.GLColumn glColumn4 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
             MetaCopy.Components.CustomLabel customLabel1;
             this.panelTitle = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
@@ -128,7 +128,7 @@ namespace MetaCopy
             this.checkBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.checkBox1.Location = new System.Drawing.Point(501, 692);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(84, 21);
+            this.checkBox1.Size = new System.Drawing.Size(85, 21);
             this.checkBox1.TabIndex = 17;
             this.checkBox1.Text = "Cut Mode";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -189,6 +189,7 @@ namespace MetaCopy
             this.pathLabel.TabStop = false;
             this.pathLabel.Text = "add a watch folder";
             this.pathLabel.WordWrap = false;
+            this.pathLabel.Click += new System.EventHandler(this.openFolder);
             // 
             // glacialList
             // 
@@ -200,25 +201,25 @@ namespace MetaCopy
             this.glacialList.AutoHeight = true;
             this.glacialList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
             this.glacialList.BackgroundStretchToFit = true;
-            glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn4.CheckBoxes = true;
-            glColumn4.ImageIndex = -1;
-            glColumn4.Name = "filename";
-            glColumn4.NumericSort = false;
-            glColumn4.Text = "  Name";
-            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn4.Width = 140;
-            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn5.CheckBoxes = false;
-            glColumn5.ImageIndex = -1;
-            glColumn5.Name = "path";
-            glColumn5.NumericSort = false;
-            glColumn5.Text = "  Path";
-            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn5.Width = 370;
+            glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn1.CheckBoxes = true;
+            glColumn1.ImageIndex = -1;
+            glColumn1.Name = "filename";
+            glColumn1.NumericSort = false;
+            glColumn1.Text = "  Name";
+            glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn1.Width = 140;
+            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn2.CheckBoxes = false;
+            glColumn2.ImageIndex = -1;
+            glColumn2.Name = "path";
+            glColumn2.NumericSort = false;
+            glColumn2.Text = "  Path";
+            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn2.Width = 370;
             this.glacialList.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn4,
-            glColumn5});
+            glColumn1,
+            glColumn2});
             this.glacialList.ControlStyle = GlacialComponents.Controls.GLControlStyles.SuperFlat;
             this.glacialList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
@@ -276,16 +277,16 @@ namespace MetaCopy
             this.glacialListPath.AutoHeight = true;
             this.glacialListPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
             this.glacialListPath.BackgroundStretchToFit = true;
-            glColumn1.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn1.CheckBoxes = true;
-            glColumn1.ImageIndex = -1;
-            glColumn1.Name = "filename";
-            glColumn1.NumericSort = false;
-            glColumn1.Text = "  Destination Path";
-            glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn1.Width = 530;
+            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn3.CheckBoxes = true;
+            glColumn3.ImageIndex = -1;
+            glColumn3.Name = "filename";
+            glColumn3.NumericSort = false;
+            glColumn3.Text = "  Destination Path";
+            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn3.Width = 530;
             this.glacialListPath.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn1});
+            glColumn3});
             this.glacialListPath.ControlStyle = GlacialComponents.Controls.GLControlStyles.SuperFlat;
             this.glacialListPath.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialListPath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
@@ -350,6 +351,7 @@ namespace MetaCopy
             this.customButton4.TabIndex = 15;
             this.customButton4.Text = "COPY";
             this.customButton4.UseVisualStyleBackColor = false;
+            this.customButton4.Click += new System.EventHandler(this.doCopy);
             // 
             // btnRem
             // 
