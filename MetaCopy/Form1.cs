@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Threading;
 using GlacialComponents.Controls;
 
 namespace MetaCopy
@@ -75,6 +76,7 @@ namespace MetaCopy
                     }
                     catch (FileNotFoundException ex){
                         //Don't exist
+                        Console.WriteLine(ex.Message);
                     }
 
                     glacialList.Items.Remove(item);
@@ -380,42 +382,103 @@ namespace MetaCopy
 
         private void doCopy(object sender, EventArgs e)
         {
+            new Thread(new ThreadStart(startCopy)).Start();
+        }
+
+        private void startCopy()
+        {
             int tickCount = 0;
             foreach (GLItem item in glacialList.Items)
                 if (item.SubItems[0].Checked) tickCount++;
 
-            if(glacialListPath.Items.Count == 0)
+            if (glacialListPath.Items.Count == 0)
                 setStatus("Your life is pointless, so are your files.", 2);
-            else if(glacialList.Items.Count == 0)
+            else if (glacialList.Items.Count == 0)
                 setStatus("You have nothing in your life, not even a mere file.", 2);
-            else if(tickCount == 0)
+            else if (tickCount == 0)
                 setStatus("Uhh... what is your plan exactly?", 2);
 
-            foreach (GLItem path in glacialListPath.Items)
-            {
-                foreach (GLItem item in glacialList.Items)
-                {
+            foreach (GLItem path in glacialListPath.Items) {
+                float progress = 0;
+                float count = getFileCount();
+                int completed = 0;
+
+                setStatus("Copying: 0%", 1);
+
+                foreach (GLItem item in glacialList.Items) {
+                    if (!item.SubItems[0].Checked) continue;
+
                     string filename = item.SubItems[0].Text;
                     string sourcePath = item.SubItems[1].Text;
                     string destPath = path.SubItems[0].Text;
-                    string destFile= Path.Combine(path.SubItems[0].Text, filename);
+                    string destFile = Path.Combine(path.SubItems[0].Text, filename);
+                    //string sourceFilename = Path.Combine(sourcePath, filename);
 
                     try
                     {
                         if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
+                        if (File.GetAttributes(sourcePath).HasFlag(FileAttributes.Directory))
+                            copyDirectory(sourcePath, destFile);
+                        else File.Copy(sourcePath, destFile, true);
+
+                        completed++;
+                        progress = (completed/count)*100;
+//                        this.Invoke((MethodInvoker) delegate {
+                        setStatus("Copying: " + progress.ToString("0.00") + "%", 1);
+//                        });
+
                     }
                     catch (UnauthorizedAccessException ex)
                     {
-                        MessageBox.Show("Can't create folder.", "Error");
-                        setStatus("Failure. Permission denied. You are.", 2);
+                        MessageBox.Show("Access error: " + filename, "Error");
+                        setStatus("Failure. Unable to write " + filename + ". You are. Process terminated.", 2);
+                        return;
                     }
                     catch (ArgumentException ex)
                     {
                         MessageBox.Show("Invalid path.", "Error");
-                        setStatus("Operation terminated.", 2);
+                        setStatus("Process terminated.", 2);
+                        return;
+                    }
+                    catch (IOException ex)
+                    {
+                        MessageBox.Show("Unknown error. Check source path", "Error");
+                        setStatus("Unknown error. Check source path", 2);
+                        return;
                     }
                 }
             }
+
+            setStatus("Most probably it is a success.", 1);
         }
+
+        private int getFileCount(){
+            int count = 0;
+
+            foreach (GLItem item in glacialList.Items)
+                if (item.SubItems[0].Checked) count++;
+            return count;
+        }
+
+        private void copyDirectory(string Src, string Dst) {
+            String[] Files;
+
+            if (Dst[Dst.Length - 1] != Path.DirectorySeparatorChar)
+                Dst += Path.DirectorySeparatorChar;
+
+            if (!Directory.Exists(Dst)) Directory.CreateDirectory(Dst);
+
+            Files = Directory.GetFileSystemEntries(Src);
+
+            foreach (string Element in Files) {
+                // Sub directories
+                if (Directory.Exists(Element))
+                    copyDirectory(Element, Dst + Path.GetFileName(Element));
+                // Files in directory
+                else
+                    File.Copy(Element, Dst + Path.GetFileName(Element), true);
+            }
+        }
+
     }
 }
