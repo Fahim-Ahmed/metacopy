@@ -29,6 +29,7 @@ namespace MetaCopy
 
         private FileSystemWatcher watcher;
         private string watchPath;
+        private bool isRunning;
 
         public Form1()
         {
@@ -87,6 +88,7 @@ namespace MetaCopy
         }
 
         private void OnDirectoryChanged(object sender, FileSystemEventArgs e){
+            if (isRunning) return;
             addFilesToList(Directory.GetDirectories(watchPath));
             addFilesToList(Directory.GetFiles(watchPath));
             checkExistence();
@@ -94,18 +96,41 @@ namespace MetaCopy
             setStatus("Directory structure changed. File list updated.", 1);
         }
 
-        void panel1_DragEnter(object sender, DragEventArgs e)
-        {
+        void panel1_DragEnter(object sender, DragEventArgs e){
+            if (isRunning) return;
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
 
-        private void panel1_DragDrop(object sender, DragEventArgs e)
-        {
+        private void panel1_DragDrop(object sender, DragEventArgs e){
+            if (isRunning) return;
+            GlacialList gl = (GlacialList) sender;
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[]) e.Data.GetData(DataFormats.FileDrop);
-                addFilesToList(files);
+
+                if (gl.Name == "glacialList")
+                    addFilesToList(files);
+                else{
+                    foreach (string path in files){
+                        if (File.GetAttributes(path).HasFlag(FileAttributes.Directory)){
+                            addDestPath(path);
+                            glacialListPath.Refresh();
+                        }
+                    }
+                }
             }
+        }
+
+        private void addDestPath(string path){
+            if (hasThisPath(path)) return;
+
+            GLItem item = new GLItem();
+            item.ForeColor = Color.FromArgb(255, 141, 151, 166);
+            item.SubItems[0].Text = path;
+            item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
+            glacialListPath.Items.Add(item);
+
+            item.SubItems[0].Checked = true;
         }
 
         private bool hasThisFile(string path)
@@ -219,6 +244,7 @@ namespace MetaCopy
         }
 
         private void onButtonClick(object sender, EventArgs e){
+            if (isRunning) return;
             Button btn = (Button) sender;
 
             switch (btn.Text){
@@ -279,6 +305,8 @@ namespace MetaCopy
         }
 
         private void openFolder(object sender, EventArgs e) {
+            if (isRunning) return;
+
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             DialogResult result = fbd.ShowDialog();
 
@@ -299,18 +327,11 @@ namespace MetaCopy
 
                         startWatch(fbd.SelectedPath);
                         watchPath = fbd.SelectedPath;
+                        glacialList.Refresh();
 
                         break;
                     case "btnAddDestPath":
-                        if (hasThisPath(fbd.SelectedPath)) break;
-
-                        GLItem item = new GLItem();
-                        item.ForeColor = Color.FromArgb(255, 141, 151, 166);
-                        item.SubItems[0].Text = fbd.SelectedPath;
-                        item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
-                        glacialListPath.Items.Add(item);
-
-                        item.SubItems[0].Checked = true;
+                        addDestPath(fbd.SelectedPath);
                         glacialListPath.Refresh();
                         break;
                 }
@@ -352,6 +373,7 @@ namespace MetaCopy
         }
 
         private void onPathButton(object sender, EventArgs e){
+            if (isRunning) return;
             Button btn = (Button) sender;
 
             switch (btn.Name){
@@ -382,6 +404,7 @@ namespace MetaCopy
 
         private void doCopy(object sender, EventArgs e)
         {
+            if(isRunning) return;
             new Thread(new ThreadStart(startCopy)).Start();
         }
 
@@ -398,8 +421,9 @@ namespace MetaCopy
             else if (tickCount == 0)
                 setStatus("Uhh... what is your plan exactly?", 2);
 
+            isRunning = true;
+
             foreach (GLItem path in glacialListPath.Items) {
-                float progress = 0;
                 float count = getFileCount();
                 int completed = 0;
 
@@ -422,34 +446,35 @@ namespace MetaCopy
                         else File.Copy(sourcePath, destFile, true);
 
                         completed++;
-                        progress = (completed/count)*100;
-//                        this.Invoke((MethodInvoker) delegate {
+                        float progress = (completed/count)*100;
                         setStatus("Copying: " + progress.ToString("0.00") + "%", 1);
-//                        });
-
                     }
                     catch (UnauthorizedAccessException ex)
                     {
                         MessageBox.Show("Access error: " + filename, "Error");
                         setStatus("Failure. Unable to write " + filename + ". You are. Process terminated.", 2);
+                        isRunning = false;
                         return;
                     }
                     catch (ArgumentException ex)
                     {
                         MessageBox.Show("Invalid path.", "Error");
                         setStatus("Process terminated.", 2);
+                        isRunning = false;
                         return;
                     }
                     catch (IOException ex)
                     {
                         MessageBox.Show("Unknown error. Check source path", "Error");
                         setStatus("Unknown error. Check source path", 2);
+                        isRunning = false;
                         return;
                     }
                 }
             }
 
             setStatus("Most probably it is a success.", 1);
+            isRunning = false;
         }
 
         private int getFileCount(){

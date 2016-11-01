@@ -32,11 +32,11 @@ namespace MetaCopy
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label1;
+            MetaCopy.Components.CustomLabel customLabel1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
-            MetaCopy.Components.CustomLabel customLabel1;
             this.panelTitle = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnOpenPath = new System.Windows.Forms.Button();
@@ -77,6 +77,19 @@ namespace MetaCopy
             label1.TabIndex = 2;
             label1.Text = "Watch Folder";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // customLabel1
+            // 
+            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
+            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
+            customLabel1.Location = new System.Drawing.Point(0, 0);
+            customLabel1.Name = "customLabel1";
+            customLabel1.Size = new System.Drawing.Size(120, 32);
+            customLabel1.TabIndex = 0;
+            customLabel1.Text = "METACOPY";
+            customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             // 
             // panelTitle
             // 
@@ -128,7 +141,7 @@ namespace MetaCopy
             this.checkBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.checkBox1.Location = new System.Drawing.Point(501, 692);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(85, 21);
+            this.checkBox1.Size = new System.Drawing.Size(84, 21);
             this.checkBox1.TabIndex = 17;
             this.checkBox1.Text = "Cut Mode";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -319,6 +332,8 @@ namespace MetaCopy
             this.glacialListPath.TabIndex = 4;
             this.glacialListPath.Text = "glacialListPath";
             this.glacialListPath.ItemChangedEvent += new GlacialComponents.Controls.ChangedEventHandler(this.glacialListPath_ItemChangedEvent);
+            this.glacialListPath.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.glacialListPath.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // panel3
             // 
@@ -508,19 +523,6 @@ namespace MetaCopy
             this.button1.Text = "Select All";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.onButtonClick);
-            // 
-            // customLabel1
-            // 
-            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
-            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
-            customLabel1.Location = new System.Drawing.Point(0, 0);
-            customLabel1.Name = "customLabel1";
-            customLabel1.Size = new System.Drawing.Size(120, 32);
-            customLabel1.TabIndex = 0;
-            customLabel1.Text = "METACOPY";
-            customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             // 
             // Form1
             // 
