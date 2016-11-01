@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace MetaCopy
 {
+    [Serializable]
     class FileObject{
         public string Name { set; get; }
         public string Path { set; get; }
