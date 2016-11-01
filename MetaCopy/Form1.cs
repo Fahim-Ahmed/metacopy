@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Threading;
 using GlacialComponents.Controls;
 
-namespace MetaCopy
-{
-    public partial class Form1 : Form
-    {
+namespace MetaCopy {
+    public partial class Form1 : Form {
         private const int WM_NCHITTEST = 0x84;
         private const int HT_CLIENT = 0x1;
         private const int HT_CAPTION = 0x2;
@@ -31,18 +22,18 @@ namespace MetaCopy
         private string watchPath;
         private bool isRunning;
 
-        public Form1()
-        {
+        public Form1() {
             InitializeComponent();
 
             glacialList.BringToFront();
             glacialListPath.BringToFront();
+            LabelHint.BringToFront();
 
             watcher = new FileSystemWatcher();
+            watchPath = "";
         }
 
-        private void startWatch(string path)
-        {
+        private void startWatch(string path) {
             watcher.Path = path;
             watcher.NotifyFilter = NotifyFilters.Size | NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             watcher.Filter = "*.*";
@@ -53,41 +44,42 @@ namespace MetaCopy
             watcher.EnableRaisingEvents = true;
         }
 
-        private void removeWatch(){
+        private void removeWatch() {
             watcher.Changed -= OnDirectoryChanged;
             watcher.Deleted -= OnDirectoryChanged;
             watcher.Created -= OnDirectoryChanged;
             watcher.Renamed -= OnDirectoryChanged;
 
             pathLabel.Text = "add a watch folder";
+            watchPath = "";
+            autoCheck.Checked = false;
         }
 
-        private void checkExistence(){
-            for(int i = 0; i < glacialList.Items.Count; i++){
+        private void checkExistence() {
+            for (int i = 0; i < glacialList.Items.Count; i++) {
                 GLItem item = glacialList.Items[i];
                 string path = item.SubItems[1].Text;
 
-                if (!File.Exists(item.SubItems[1].Text)){
+                if (!File.Exists(item.SubItems[1].Text)) {
 
-                    try{
-                        if (File.GetAttributes(path).HasFlag(FileAttributes.Directory)){
-                            //Exist
-                            continue;
+                    try {
+                        if (File.GetAttributes(path).HasFlag(FileAttributes.Directory)) {
+                            continue; //Exist
                         }
                     }
-                    catch (FileNotFoundException ex){
-                        //Don't exist
-                        Console.WriteLine(ex.Message);
+                    catch (FileNotFoundException ex) {
+                        Console.WriteLine(ex.Message); //Don't exist
                     }
 
                     glacialList.Items.Remove(item);
-                    glacialList.Refresh();
-                    i = 0;
+                    i = -1;
                 }
             }
+
+            glacialList.Refresh();
         }
 
-        private void OnDirectoryChanged(object sender, FileSystemEventArgs e){
+        private void OnDirectoryChanged(object sender, FileSystemEventArgs e) {
             if (isRunning) return;
             addFilesToList(Directory.GetDirectories(watchPath));
             addFilesToList(Directory.GetFiles(watchPath));
@@ -96,32 +88,36 @@ namespace MetaCopy
             setStatus("Directory structure changed. File list updated.", 1);
         }
 
-        void panel1_DragEnter(object sender, DragEventArgs e){
+        void panel1_DragEnter(object sender, DragEventArgs e) {
             if (isRunning) return;
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
 
-        private void panel1_DragDrop(object sender, DragEventArgs e){
+        private void panel1_DragDrop(object sender, DragEventArgs e) {
             if (isRunning) return;
-            GlacialList gl = (GlacialList) sender;
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                string[] files = (string[]) e.Data.GetData(DataFormats.FileDrop);
 
-                if (gl.Name == "glacialList")
+            GlacialList gl = (GlacialList)sender;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if (gl.Name == "glacialList"){
                     addFilesToList(files);
-                else{
-                    foreach (string path in files){
+                    glacialList.Refresh();
+                } else {
+                    foreach (string path in files)
+                    {
                         if (File.GetAttributes(path).HasFlag(FileAttributes.Directory)){
                             addDestPath(path);
-                            glacialListPath.Refresh();
                         }
                     }
+                    glacialListPath.Refresh();
                 }
             }
+
+            LabelHint.Visible = (glacialList.Items.Count == 0);
         }
 
-        private void addDestPath(string path){
+        private void addDestPath(string path) {
             if (hasThisPath(path)) return;
 
             GLItem item = new GLItem();
@@ -133,25 +129,24 @@ namespace MetaCopy
             item.SubItems[0].Checked = true;
         }
 
-        private bool hasThisFile(string path)
-        {
+        private bool hasThisFile(string path) {
             if (glacialList.Items.Count == 0) return false;
 
-            foreach (GLItem item in glacialList.Items)
-            {
+            foreach (GLItem item in glacialList.Items) {
                 if (item.SubItems[1].Text == path)
+                {
+                    item.SubItems[0].Checked = true;
                     return true;
+                }
             }
 
             return false;
         }
 
-        private bool hasThisPath(string path)
-        {
+        private bool hasThisPath(string path) {
             if (glacialListPath.Items.Count == 0) return false;
 
-            foreach (GLItem item in glacialListPath.Items)
-            {
+            foreach (GLItem item in glacialListPath.Items) {
                 if (item.SubItems[0].Text == path)
                     return true;
             }
@@ -159,30 +154,25 @@ namespace MetaCopy
             return false;
         }
 
-        private void setSelectedColor(GLSubItem sub){
+        private void setSelectedColor(GLSubItem sub) {
             sub.ForeColor = Color.FromArgb(255, 36, 42, 52);
             sub.BackColor = Color.FromArgb(255, 242, 208, 59);
         }
 
-        private void setDefaultColor(GLSubItem sub)
-        {
+        private void setDefaultColor(GLSubItem sub) {
             sub.ForeColor = Color.FromArgb(255, 141, 151, 166);
             sub.BackColor = Color.FromArgb(255, 29, 34, 41);
         }
 
-        private void panel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
+        private void panel_MouseMove(object sender, MouseEventArgs e) {
+            if (e.Button == MouseButtons.Left) {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
 
-        private void setStatus(string msg, int type)
-        {
-            switch (type)
-            {
+        private void setStatus(string msg, int type) {
+            switch (type) {
                 case 0: // normal
                     labelStat.Text = msg;
                     labelStat.ForeColor = Color.FromArgb(255, 141, 151, 166);
@@ -198,29 +188,29 @@ namespace MetaCopy
             }
         }
 
-        protected override void WndProc(ref Message m)
-        {
+        protected override void WndProc(ref Message m) {
             base.WndProc(ref m);
             if (m.Msg == WM_NCHITTEST)
                 m.Result = (IntPtr)(HT_CAPTION);
         }
 
-        private void glacialList_ItemChangedEvent(object source, ChangedEventArgs e){
-            if (e.ChangedType == ChangedTypes.SelectionChanged || e.ChangedType == ChangedTypes.SubItemChanged){
-                if (e.Item.SubItems[0].Checked){
+        private void glacialList_ItemChangedEvent(object source, ChangedEventArgs e) {
+            if (e.ChangedType == ChangedTypes.SelectionChanged || e.ChangedType == ChangedTypes.SubItemChanged) {
+                if (e.Item.SubItems[0].Checked) {
                     setSelectedColor(e.Item.SubItems[0]);
                     setSelectedColor(e.Item.SubItems[1]);
 
                     glacialList.SelectedTextColor = Color.FromArgb(255, 36, 42, 52);
                     glacialList.SelectionColor = Color.FromArgb(255, 242, 208, 59);
                 }
-                else{
+                else {
                     setDefaultColor(e.Item.SubItems[0]);
                     setDefaultColor(e.Item.SubItems[1]);
 
                     glacialList.SelectedTextColor = Color.FromArgb(255, 141, 151, 166);
                     glacialList.SelectionColor = Color.FromArgb(255, 29, 34, 41);
                 }
+
             }
         }
 
@@ -243,32 +233,30 @@ namespace MetaCopy
             }
         }
 
-        private void onButtonClick(object sender, EventArgs e){
+        private void onButtonClick(object sender, EventArgs e) {
             if (isRunning) return;
-            Button btn = (Button) sender;
+            Button btn = (Button)sender;
 
-            switch (btn.Text){
+            switch (btn.Text) {
                 case "Select All":
                     Console.WriteLine("SA");
-                    foreach (GLItem item in glacialList.Items){
+                    foreach (GLItem item in glacialList.Items) {
                         item.SubItems[0].Checked = true;
                     }
                     break;
                 case "Invert":
                     Console.WriteLine("Invert");
-                    foreach (GLItem item in glacialList.Items)
-                    {
+                    foreach (GLItem item in glacialList.Items) {
                         item.SubItems[0].Checked = !item.SubItems[0].Checked;
                     }
 
-                    foreach (GLItem item in glacialList.Items)
-                    {
-                        if (item.Selected){
-                            if (item.SubItems[0].Checked){
+                    foreach (GLItem item in glacialList.Items) {
+                        if (item.Selected) {
+                            if (item.SubItems[0].Checked) {
                                 glacialList.SelectedTextColor = Color.FromArgb(255, 36, 42, 52);
                                 glacialList.SelectionColor = Color.FromArgb(255, 242, 208, 59);
                             }
-                            else{
+                            else {
                                 glacialList.SelectedTextColor = Color.FromArgb(255, 141, 151, 166);
                                 glacialList.SelectionColor = Color.FromArgb(255, 29, 34, 41);
                             }
@@ -281,17 +269,14 @@ namespace MetaCopy
                         item.SubItems[0].Checked = false;
                     break;
                 case "Remove":
-                    for (int i = 0; i < glacialList.Items.Count; i++){
+                    for (int i = 0; i < glacialList.Items.Count; i++) {
                         GLItem item = glacialList.Items[i];
-                        if (item.SubItems[0].Checked){
+                        if (item.SubItems[0].Checked) {
                             glacialList.Items.RemoveAt(i);
-                            i = 0;
+                            i = -1;
                         }
                     }
-
-                    if (glacialList.Items.Count > 0)
-                        if (glacialList.Items[0].SubItems[0].Checked == true) glacialList.Items.RemoveAt(0);
-
+                    LabelHint.Visible = (glacialList.Items.Count == 0);
                     glacialList.Refresh();
 
                     break;
@@ -300,12 +285,15 @@ namespace MetaCopy
                     glacialList.Refresh();
                     removeWatch();
                     setStatus("Watch removed.", 0);
+                    LabelHint.Visible = true;
                     break;
             }
         }
 
         private void openFolder(object sender, EventArgs e) {
             if (isRunning) return;
+
+            Control btn = (Control)sender;
 
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             DialogResult result = fbd.ShowDialog();
@@ -316,9 +304,7 @@ namespace MetaCopy
 
                 //MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
 
-                Control btn = (Control) sender;
-
-                switch (btn.Name){
+                switch (btn.Name) {
                     case "pathLabel":
                     case "btnOpenPath":
                         addFilesToList(dir);
@@ -329,6 +315,8 @@ namespace MetaCopy
                         watchPath = fbd.SelectedPath;
                         glacialList.Refresh();
 
+                        LabelHint.Visible = (glacialList.Items.Count == 0);
+
                         break;
                     case "btnAddDestPath":
                         addDestPath(fbd.SelectedPath);
@@ -338,10 +326,15 @@ namespace MetaCopy
             }
         }
 
-        public void addFilesToList(string[] files){
-            foreach (string filePath in files)
-            {
-                if (hasThisFile(filePath)) continue;
+        public void addFilesToList(string[] files)
+        {
+            int c = 0;
+            foreach (string filePath in files) {
+                if (hasThisFile(filePath)) { continue;}
+                if (hasThisInPath(filePath)){
+                    setStatus(Path.GetFileName(filePath) + ". Folder already in destination path", 2);
+                    continue;
+                }
 
                 GLItem item = glacialList.Items.Add(Path.GetFileName(filePath));
                 item.ForeColor = Color.FromArgb(255, 141, 151, 166);
@@ -350,47 +343,56 @@ namespace MetaCopy
 
                 item.SubItems[1].Text = filePath;
                 item.SubItems[1].ForeColor = Color.FromArgb(255, 141, 151, 166);
+                c++;
             }
+
+            setStatus("File(s) added: " + c, 0);
+        }
+
+        private bool hasThisInPath(string path)
+        {
+            if (glacialListPath.Items.Count == 0) return false;
+
+            foreach (GLItem item in glacialListPath.Items) {
+                if (item.SubItems[0].Text == path)
+                    return true;
+            }
+
+            return false;
         }
 
         private void closeApp(object sender, EventArgs e) {
             Application.Exit();
         }
 
-        private void onPaint(object sender, PaintEventArgs e){
-            Panel p = (Panel) sender;
+        private void onPaint(object sender, PaintEventArgs e) {
+            Panel p = (Panel)sender;
             ControlPaint.DrawBorder(e.Graphics, p.ClientRectangle, Color.FromArgb(255, 49, 54, 61), ButtonBorderStyle.Solid);
         }
 
-        private void onPanelResize(object sender, EventArgs e)
-        {
+        private void onPanelResize(object sender, EventArgs e) {
             Invalidate();
         }
 
-        private void clearWatchPath(object sender, EventArgs e){
+        private void clearWatchPath(object sender, EventArgs e) {
             removeWatch();
             setStatus("Watch removed.", 0);
         }
 
-        private void onPathButton(object sender, EventArgs e){
+        private void onPathButton(object sender, EventArgs e) {
             if (isRunning) return;
-            Button btn = (Button) sender;
+            Button btn = (Button)sender;
 
-            switch (btn.Name){
+            switch (btn.Name) {
                 case "btnRem":
-                    for (int i = 0; i < glacialListPath.Items.Count; i++)
-                    {
+                    for (int i = 0; i < glacialListPath.Items.Count; i++) {
                         GLItem item = glacialListPath.Items[i];
-                        if (item.SubItems[0].Checked)
-                        {
+                        if (item.SubItems[0].Checked) {
                             glacialListPath.Items.RemoveAt(i);
                             glacialListPath.Refresh();
-                            i = 0;
+                            i = -1;
                         }
                     }
-
-                    if (glacialListPath.Items.Count > 0)
-                        if(glacialListPath.Items[0].SubItems[0].Checked == true) glacialListPath.Items.RemoveAt(0);
 
                     glacialListPath.Refresh();
 
@@ -402,24 +404,31 @@ namespace MetaCopy
             }
         }
 
-        private void doCopy(object sender, EventArgs e)
-        {
-            if(isRunning) return;
+        private void doCopy(object sender, EventArgs e) {
+            if (isRunning) return;
             new Thread(new ThreadStart(startCopy)).Start();
         }
 
-        private void startCopy()
-        {
+        private void startCopy() {
             int tickCount = 0;
+
             foreach (GLItem item in glacialList.Items)
                 if (item.SubItems[0].Checked) tickCount++;
 
-            if (glacialListPath.Items.Count == 0)
+            if (glacialListPath.Items.Count == 0) {
                 setStatus("Your life is pointless, so are your files.", 2);
-            else if (glacialList.Items.Count == 0)
+                return;
+            }
+
+            if (glacialList.Items.Count == 0 && !autoCheck.Checked) {
                 setStatus("You have nothing in your life, not even a mere file.", 2);
-            else if (tickCount == 0)
+                return;
+            }
+
+            if (tickCount == 0 && !autoCheck.Checked) {
                 setStatus("Uhh... what is your plan exactly?", 2);
+                return;
+            }
 
             isRunning = true;
 
@@ -427,6 +436,8 @@ namespace MetaCopy
                 float count = getFileCount();
                 int completed = 0;
 
+                if(!path.SubItems[0].Checked) continue;
+                
                 setStatus("Copying: 0%", 1);
 
                 foreach (GLItem item in glacialList.Items) {
@@ -438,46 +449,61 @@ namespace MetaCopy
                     string destFile = Path.Combine(path.SubItems[0].Text, filename);
                     //string sourceFilename = Path.Combine(sourcePath, filename);
 
-                    try
-                    {
+                    try {
                         if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
                         if (File.GetAttributes(sourcePath).HasFlag(FileAttributes.Directory))
                             copyDirectory(sourcePath, destFile);
                         else File.Copy(sourcePath, destFile, true);
 
+                        if(deselectCheck.Checked)
+                            Invoke((MethodInvoker) delegate { item.SubItems[0].Checked = false; });
+
                         completed++;
-                        float progress = (completed/count)*100;
+                        float progress = (completed / count) * 100;
                         setStatus("Copying: " + progress.ToString("0.00") + "%", 1);
                     }
-                    catch (UnauthorizedAccessException ex)
-                    {
+                    catch (UnauthorizedAccessException ex) {
                         MessageBox.Show("Access error: " + filename, "Error");
                         setStatus("Failure. Unable to write " + filename + ". You are. Process terminated.", 2);
                         isRunning = false;
+                        autoCheck.Checked = false;
                         return;
                     }
-                    catch (ArgumentException ex)
-                    {
+                    catch (ArgumentException ex) {
                         MessageBox.Show("Invalid path.", "Error");
                         setStatus("Process terminated.", 2);
                         isRunning = false;
+                        autoCheck.Checked = false;
                         return;
                     }
-                    catch (IOException ex)
-                    {
+                    catch (IOException ex) {
                         MessageBox.Show("Unknown error. Check source path", "Error");
                         setStatus("Unknown error. Check source path", 2);
                         isRunning = false;
+                        autoCheck.Checked = false;
                         return;
                     }
                 }
             }
 
             setStatus("Most probably it is a success.", 1);
+
+            if (cutmode.Checked) deleteFiles();
+
             isRunning = false;
         }
 
-        private int getFileCount(){
+        private void deleteFiles() {
+            foreach (GLItem item in glacialList.Items) {
+                if (item.SubItems[0].Checked) {
+                    File.Delete(item.SubItems[1].Text);
+                }
+            }
+
+            checkExistence();
+        }
+
+        private int getFileCount() {
             int count = 0;
 
             foreach (GLItem item in glacialList.Items)
@@ -505,5 +531,24 @@ namespace MetaCopy
             }
         }
 
+        private void onCutChecked(object sender, EventArgs e) {
+            btnCopy.Text = (cutmode.Checked) ? "MOVE" : "COPY";
+        }
+
+        private void onAutoCopyChecked(object sender, EventArgs e) {
+            if (glacialListPath.Items.Count == 0) {
+                autoCheck.Checked = false;
+                setStatus("Add destination path.", 2);
+            }
+            else {
+                setStatus("Auto copy / move started.", 1);
+                doCopy(this, null);
+            }
+        }
+
+        private void doMinimize(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
     }
 }

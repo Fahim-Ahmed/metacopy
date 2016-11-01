@@ -32,15 +32,15 @@ namespace MetaCopy
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label1;
-            MetaCopy.Components.CustomLabel customLabel1;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            MetaCopy.Components.CustomLabel customLabel1;
             this.panelTitle = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnOpenPath = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.cutmode = new System.Windows.Forms.CheckBox();
             this.labelStat = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button6 = new System.Windows.Forms.Button();
@@ -49,7 +49,12 @@ namespace MetaCopy
             this.panel2 = new System.Windows.Forms.Panel();
             this.glacialListPath = new GlacialComponents.Controls.GlacialList();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.customButton4 = new MetaCopy.Components.CustomButton();
+            this.autoCheck = new System.Windows.Forms.CheckBox();
+            this.deselectCheck = new System.Windows.Forms.CheckBox();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.LabelHint = new System.Windows.Forms.Label();
+            this.btnCopy = new MetaCopy.Components.CustomButton();
             this.btnRem = new MetaCopy.Components.CustomButton();
             this.btnRemAll = new MetaCopy.Components.CustomButton();
             this.btnAddDestPath = new MetaCopy.Components.CustomButton();
@@ -71,34 +76,23 @@ namespace MetaCopy
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
-            label1.Location = new System.Drawing.Point(48, 66);
+            label1.Location = new System.Drawing.Point(28, 65);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(97, 20);
             label1.TabIndex = 2;
             label1.Text = "Watch Folder";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // customLabel1
-            // 
-            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
-            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
-            customLabel1.Location = new System.Drawing.Point(0, 0);
-            customLabel1.Name = "customLabel1";
-            customLabel1.Size = new System.Drawing.Size(120, 32);
-            customLabel1.TabIndex = 0;
-            customLabel1.Text = "METACOPY";
-            customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            // 
             // panelTitle
             // 
             this.panelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.panelTitle.Controls.Add(this.button8);
+            this.panelTitle.Controls.Add(this.button7);
             this.panelTitle.Controls.Add(this.btnClose);
             this.panelTitle.Controls.Add(customLabel1);
             this.panelTitle.Location = new System.Drawing.Point(0, 0);
             this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(640, 32);
+            this.panelTitle.Size = new System.Drawing.Size(600, 32);
             this.panelTitle.TabIndex = 0;
             this.panelTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_MouseMove);
             // 
@@ -111,7 +105,7 @@ namespace MetaCopy
             this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
-            this.btnClose.Location = new System.Drawing.Point(606, 3);
+            this.btnClose.Location = new System.Drawing.Point(568, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(26, 26);
             this.btnClose.TabIndex = 19;
@@ -127,24 +121,25 @@ namespace MetaCopy
             this.btnOpenPath.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnOpenPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenPath.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenPath.Image")));
-            this.btnOpenPath.Location = new System.Drawing.Point(560, 62);
+            this.btnOpenPath.Location = new System.Drawing.Point(540, 61);
             this.btnOpenPath.Name = "btnOpenPath";
             this.btnOpenPath.Size = new System.Drawing.Size(26, 26);
             this.btnOpenPath.TabIndex = 3;
             this.btnOpenPath.UseVisualStyleBackColor = false;
             this.btnOpenPath.Click += new System.EventHandler(this.openFolder);
             // 
-            // checkBox1
+            // cutmode
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.checkBox1.Location = new System.Drawing.Point(501, 692);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(84, 21);
-            this.checkBox1.TabIndex = 17;
-            this.checkBox1.Text = "Cut Mode";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.cutmode.AutoSize = true;
+            this.cutmode.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cutmode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.cutmode.Location = new System.Drawing.Point(481, 652);
+            this.cutmode.Name = "cutmode";
+            this.cutmode.Size = new System.Drawing.Size(85, 21);
+            this.cutmode.TabIndex = 17;
+            this.cutmode.Text = "Cut Mode";
+            this.cutmode.UseVisualStyleBackColor = true;
+            this.cutmode.CheckedChanged += new System.EventHandler(this.onCutChecked);
             // 
             // labelStat
             // 
@@ -152,7 +147,7 @@ namespace MetaCopy
             this.labelStat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.labelStat.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelStat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.labelStat.Location = new System.Drawing.Point(52, 720);
+            this.labelStat.Location = new System.Drawing.Point(32, 680);
             this.labelStat.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelStat.Name = "labelStat";
             this.labelStat.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
@@ -166,7 +161,7 @@ namespace MetaCopy
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
             this.panel1.Controls.Add(this.button6);
             this.panel1.Controls.Add(this.pathLabel);
-            this.panel1.Location = new System.Drawing.Point(151, 60);
+            this.panel1.Location = new System.Drawing.Point(131, 59);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(2);
             this.panel1.Size = new System.Drawing.Size(403, 32);
@@ -222,17 +217,17 @@ namespace MetaCopy
             glColumn1.Text = "  Name";
             glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn1.Width = 140;
-            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn2.CheckBoxes = false;
-            glColumn2.ImageIndex = -1;
-            glColumn2.Name = "path";
-            glColumn2.NumericSort = false;
-            glColumn2.Text = "  Path";
-            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn2.Width = 370;
+            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn5.CheckBoxes = false;
+            glColumn5.ImageIndex = -1;
+            glColumn5.Name = "path";
+            glColumn5.NumericSort = false;
+            glColumn5.Text = "  Path";
+            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn5.Width = 370;
             this.glacialList.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
-            glColumn2});
+            glColumn5});
             this.glacialList.ControlStyle = GlacialComponents.Controls.GLControlStyles.SuperFlat;
             this.glacialList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
@@ -259,7 +254,7 @@ namespace MetaCopy
             this.glacialList.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
             this.glacialList.ShowBorder = false;
             this.glacialList.ShowFocusRect = false;
-            this.glacialList.Size = new System.Drawing.Size(530, 256);
+            this.glacialList.Size = new System.Drawing.Size(530, 241);
             this.glacialList.SortType = GlacialComponents.Controls.SortTypes.InsertionSort;
             this.glacialList.SuperFlatHeaderColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
             this.glacialList.TabIndex = 4;
@@ -271,11 +266,12 @@ namespace MetaCopy
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
+            this.panel2.Controls.Add(this.LabelHint);
             this.panel2.Controls.Add(this.glacialList);
-            this.panel2.Location = new System.Drawing.Point(52, 114);
+            this.panel2.Location = new System.Drawing.Point(32, 102);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(2);
-            this.panel2.Size = new System.Drawing.Size(534, 260);
+            this.panel2.Size = new System.Drawing.Size(534, 245);
             this.panel2.TabIndex = 1;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.onPaint);
             this.panel2.Resize += new System.EventHandler(this.onPanelResize);
@@ -290,16 +286,16 @@ namespace MetaCopy
             this.glacialListPath.AutoHeight = true;
             this.glacialListPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
             this.glacialListPath.BackgroundStretchToFit = true;
-            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
-            glColumn3.CheckBoxes = true;
-            glColumn3.ImageIndex = -1;
-            glColumn3.Name = "filename";
-            glColumn3.NumericSort = false;
-            glColumn3.Text = "  Destination Path";
-            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn3.Width = 530;
+            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn2.CheckBoxes = true;
+            glColumn2.ImageIndex = -1;
+            glColumn2.Name = "filename";
+            glColumn2.NumericSort = false;
+            glColumn2.Text = "  Destination Path";
+            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn2.Width = 530;
             this.glacialListPath.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn3});
+            glColumn2});
             this.glacialListPath.ControlStyle = GlacialComponents.Controls.GLControlStyles.SuperFlat;
             this.glacialListPath.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialListPath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
@@ -339,7 +335,7 @@ namespace MetaCopy
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
             this.panel3.Controls.Add(this.glacialListPath);
-            this.panel3.Location = new System.Drawing.Point(52, 436);
+            this.panel3.Location = new System.Drawing.Point(32, 398);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(2);
             this.panel3.Size = new System.Drawing.Size(534, 160);
@@ -347,26 +343,97 @@ namespace MetaCopy
             this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.onPaint);
             this.panel3.Resize += new System.EventHandler(this.onPanelResize);
             // 
-            // customButton4
+            // autoCheck
             // 
-            this.customButton4.backColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
-            this.customButton4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
-            this.customButton4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.customButton4.FlatAppearance.BorderSize = 0;
-            this.customButton4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
-            this.customButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton4.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customButton4.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.customButton4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
-            this.customButton4.Location = new System.Drawing.Point(52, 647);
-            this.customButton4.Name = "customButton4";
-            this.customButton4.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
-            this.customButton4.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
-            this.customButton4.Size = new System.Drawing.Size(534, 39);
-            this.customButton4.TabIndex = 15;
-            this.customButton4.Text = "COPY";
-            this.customButton4.UseVisualStyleBackColor = false;
-            this.customButton4.Click += new System.EventHandler(this.doCopy);
+            this.autoCheck.AutoSize = true;
+            this.autoCheck.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.autoCheck.Location = new System.Drawing.Point(196, 652);
+            this.autoCheck.Name = "autoCheck";
+            this.autoCheck.Size = new System.Drawing.Size(84, 21);
+            this.autoCheck.TabIndex = 19;
+            this.autoCheck.Text = "AutoCopy";
+            this.autoCheck.UseVisualStyleBackColor = true;
+            this.autoCheck.Visible = false;
+            this.autoCheck.CheckedChanged += new System.EventHandler(this.onAutoCopyChecked);
+            // 
+            // deselectCheck
+            // 
+            this.deselectCheck.AutoSize = true;
+            this.deselectCheck.Checked = true;
+            this.deselectCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.deselectCheck.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deselectCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.deselectCheck.Location = new System.Drawing.Point(286, 652);
+            this.deselectCheck.Name = "deselectCheck";
+            this.deselectCheck.Size = new System.Drawing.Size(189, 21);
+            this.deselectCheck.TabIndex = 20;
+            this.deselectCheck.Text = "Deselect on Copy Complete";
+            this.deselectCheck.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.Color.Transparent;
+            this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button7.FlatAppearance.BorderSize = 0;
+            this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.Image = ((System.Drawing.Image)(resources.GetObject("button7.Image")));
+            this.button7.Location = new System.Drawing.Point(536, 3);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(26, 26);
+            this.button7.TabIndex = 20;
+            this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.doMinimize);
+            // 
+            // button8
+            // 
+            this.button8.BackColor = System.Drawing.Color.Transparent;
+            this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button8.FlatAppearance.BorderSize = 0;
+            this.button8.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.button8.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button8.Image = ((System.Drawing.Image)(resources.GetObject("button8.Image")));
+            this.button8.Location = new System.Drawing.Point(508, 3);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(26, 26);
+            this.button8.TabIndex = 21;
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Visible = false;
+            // 
+            // LabelHint
+            // 
+            this.LabelHint.AutoSize = true;
+            this.LabelHint.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelHint.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.LabelHint.Location = new System.Drawing.Point(193, 116);
+            this.LabelHint.Name = "LabelHint";
+            this.LabelHint.Size = new System.Drawing.Size(137, 13);
+            this.LabelHint.TabIndex = 5;
+            this.LabelHint.Text = "Drag and Drop Files Here";
+            // 
+            // btnCopy
+            // 
+            this.btnCopy.backColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
+            this.btnCopy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
+            this.btnCopy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnCopy.FlatAppearance.BorderSize = 0;
+            this.btnCopy.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.btnCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCopy.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCopy.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.btnCopy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.btnCopy.Location = new System.Drawing.Point(32, 607);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.btnCopy.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
+            this.btnCopy.Size = new System.Drawing.Size(534, 39);
+            this.btnCopy.TabIndex = 15;
+            this.btnCopy.Text = "COPY";
+            this.btnCopy.UseVisualStyleBackColor = false;
+            this.btnCopy.Click += new System.EventHandler(this.doCopy);
             // 
             // btnRem
             // 
@@ -377,7 +444,7 @@ namespace MetaCopy
             this.btnRem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRem.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
             this.btnRem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
-            this.btnRem.Location = new System.Drawing.Point(391, 605);
+            this.btnRem.Location = new System.Drawing.Point(371, 565);
             this.btnRem.Name = "btnRem";
             this.btnRem.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.btnRem.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
@@ -396,7 +463,7 @@ namespace MetaCopy
             this.btnRemAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRemAll.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
             this.btnRemAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
-            this.btnRemAll.Location = new System.Drawing.Point(490, 605);
+            this.btnRemAll.Location = new System.Drawing.Point(470, 565);
             this.btnRemAll.Name = "btnRemAll";
             this.btnRemAll.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.btnRemAll.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
@@ -416,7 +483,7 @@ namespace MetaCopy
             this.btnAddDestPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddDestPath.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.btnAddDestPath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.btnAddDestPath.Location = new System.Drawing.Point(52, 605);
+            this.btnAddDestPath.Location = new System.Drawing.Point(32, 565);
             this.btnAddDestPath.Name = "btnAddDestPath";
             this.btnAddDestPath.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
             this.btnAddDestPath.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
@@ -435,7 +502,7 @@ namespace MetaCopy
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
             this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
-            this.button5.Location = new System.Drawing.Point(388, 383);
+            this.button5.Location = new System.Drawing.Point(368, 353);
             this.button5.Name = "button5";
             this.button5.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.button5.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
@@ -454,7 +521,7 @@ namespace MetaCopy
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
             this.button4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
-            this.button4.Location = new System.Drawing.Point(490, 383);
+            this.button4.Location = new System.Drawing.Point(470, 353);
             this.button4.Name = "button4";
             this.button4.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.button4.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
@@ -474,7 +541,7 @@ namespace MetaCopy
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.button3.Location = new System.Drawing.Point(286, 383);
+            this.button3.Location = new System.Drawing.Point(266, 353);
             this.button3.Name = "button3";
             this.button3.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
             this.button3.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
@@ -494,7 +561,7 @@ namespace MetaCopy
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.button2.Location = new System.Drawing.Point(184, 383);
+            this.button2.Location = new System.Drawing.Point(164, 353);
             this.button2.Name = "button2";
             this.button2.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
             this.button2.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
@@ -514,7 +581,7 @@ namespace MetaCopy
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.button1.Location = new System.Drawing.Point(52, 383);
+            this.button1.Location = new System.Drawing.Point(32, 353);
             this.button1.Name = "button1";
             this.button1.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
             this.button1.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
@@ -524,19 +591,34 @@ namespace MetaCopy
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.onButtonClick);
             // 
+            // customLabel1
+            // 
+            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
+            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
+            customLabel1.Location = new System.Drawing.Point(0, 0);
+            customLabel1.Name = "customLabel1";
+            customLabel1.Size = new System.Drawing.Size(120, 32);
+            customLabel1.TabIndex = 0;
+            customLabel1.Text = "METACOPY";
+            customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(36)))), ((int)(((byte)(43)))));
-            this.ClientSize = new System.Drawing.Size(638, 768);
+            this.ClientSize = new System.Drawing.Size(598, 730);
             this.ControlBox = false;
+            this.Controls.Add(this.deselectCheck);
+            this.Controls.Add(this.autoCheck);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.labelStat);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.customButton4);
+            this.Controls.Add(this.cutmode);
+            this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.btnRem);
             this.Controls.Add(this.btnRemAll);
             this.Controls.Add(this.btnAddDestPath);
@@ -549,14 +631,16 @@ namespace MetaCopy
             this.Controls.Add(label1);
             this.Controls.Add(this.panelTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(640, 770);
-            this.MinimumSize = new System.Drawing.Size(640, 770);
+            this.MaximumSize = new System.Drawing.Size(600, 732);
+            this.MinimumSize = new System.Drawing.Size(600, 732);
             this.Name = "Form1";
             this.panelTitle.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -577,8 +661,8 @@ namespace MetaCopy
         private CustomButton btnAddDestPath;
         private CustomButton btnRem;
         private CustomButton btnRemAll;
-        private CustomButton customButton4;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private CustomButton btnCopy;
+        private System.Windows.Forms.CheckBox cutmode;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label labelStat;
         private System.Windows.Forms.Panel panel1;
@@ -586,6 +670,11 @@ namespace MetaCopy
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.CheckBox autoCheck;
+        private System.Windows.Forms.CheckBox deselectCheck;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Label LabelHint;
     }
 }
 
