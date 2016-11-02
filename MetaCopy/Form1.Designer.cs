@@ -32,12 +32,15 @@ namespace MetaCopy
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label1;
-            GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLColumn glColumn5 = new GlacialComponents.Controls.GLColumn();
-            GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
+            GlacialComponents.Controls.GLColumn glColumn4 = new GlacialComponents.Controls.GLColumn();
             MetaCopy.Components.CustomLabel customLabel1;
             this.panelTitle = new System.Windows.Forms.Panel();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnOpenPath = new System.Windows.Forms.Button();
             this.cutmode = new System.Windows.Forms.CheckBox();
@@ -47,13 +50,11 @@ namespace MetaCopy
             this.pathLabel = new System.Windows.Forms.TextBox();
             this.glacialList = new GlacialComponents.Controls.GlacialList();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.LabelHint = new System.Windows.Forms.Label();
             this.glacialListPath = new GlacialComponents.Controls.GlacialList();
             this.panel3 = new System.Windows.Forms.Panel();
             this.autoCheck = new System.Windows.Forms.CheckBox();
             this.deselectCheck = new System.Windows.Forms.CheckBox();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.LabelHint = new System.Windows.Forms.Label();
             this.btnCopy = new MetaCopy.Components.CustomButton();
             this.btnRem = new MetaCopy.Components.CustomButton();
             this.btnRemAll = new MetaCopy.Components.CustomButton();
@@ -95,6 +96,38 @@ namespace MetaCopy
             this.panelTitle.Size = new System.Drawing.Size(600, 32);
             this.panelTitle.TabIndex = 0;
             this.panelTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_MouseMove);
+            // 
+            // button8
+            // 
+            this.button8.BackColor = System.Drawing.Color.Transparent;
+            this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button8.FlatAppearance.BorderSize = 0;
+            this.button8.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.button8.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button8.Image = ((System.Drawing.Image)(resources.GetObject("button8.Image")));
+            this.button8.Location = new System.Drawing.Point(508, 3);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(26, 26);
+            this.button8.TabIndex = 21;
+            this.button8.UseVisualStyleBackColor = false;
+            this.button8.Click += new System.EventHandler(this.doMiniMode);
+            // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.Color.Transparent;
+            this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button7.FlatAppearance.BorderSize = 0;
+            this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.Image = ((System.Drawing.Image)(resources.GetObject("button7.Image")));
+            this.button7.Location = new System.Drawing.Point(536, 3);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(26, 26);
+            this.button7.TabIndex = 20;
+            this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.doMinimize);
             // 
             // btnClose
             // 
@@ -217,17 +250,26 @@ namespace MetaCopy
             glColumn1.Text = "  Name";
             glColumn1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             glColumn1.Width = 140;
-            glColumn5.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
-            glColumn5.CheckBoxes = false;
-            glColumn5.ImageIndex = -1;
-            glColumn5.Name = "path";
-            glColumn5.NumericSort = false;
-            glColumn5.Text = "  Path";
-            glColumn5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn5.Width = 370;
+            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn2.CheckBoxes = false;
+            glColumn2.ImageIndex = -1;
+            glColumn2.Name = "path";
+            glColumn2.NumericSort = false;
+            glColumn2.Text = "  Path";
+            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn2.Width = 320;
+            glColumn3.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.None;
+            glColumn3.CheckBoxes = false;
+            glColumn3.ImageIndex = -1;
+            glColumn3.Name = "Ext";
+            glColumn3.NumericSort = false;
+            glColumn3.Text = "Ext";
+            glColumn3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn3.Width = 50;
             this.glacialList.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
             glColumn1,
-            glColumn5});
+            glColumn2,
+            glColumn3});
             this.glacialList.ControlStyle = GlacialComponents.Controls.GLControlStyles.SuperFlat;
             this.glacialList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
@@ -276,6 +318,17 @@ namespace MetaCopy
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.onPaint);
             this.panel2.Resize += new System.EventHandler(this.onPanelResize);
             // 
+            // LabelHint
+            // 
+            this.LabelHint.AutoSize = true;
+            this.LabelHint.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelHint.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.LabelHint.Location = new System.Drawing.Point(193, 116);
+            this.LabelHint.Name = "LabelHint";
+            this.LabelHint.Size = new System.Drawing.Size(137, 13);
+            this.LabelHint.TabIndex = 5;
+            this.LabelHint.Text = "Drag and Drop Files Here";
+            // 
             // glacialListPath
             // 
             this.glacialListPath.AllowColumnResize = true;
@@ -286,16 +339,16 @@ namespace MetaCopy
             this.glacialListPath.AutoHeight = true;
             this.glacialListPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
             this.glacialListPath.BackgroundStretchToFit = true;
-            glColumn2.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
-            glColumn2.CheckBoxes = true;
-            glColumn2.ImageIndex = -1;
-            glColumn2.Name = "filename";
-            glColumn2.NumericSort = false;
-            glColumn2.Text = "  Destination Path";
-            glColumn2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            glColumn2.Width = 530;
+            glColumn4.ActivatedEmbeddedType = GlacialComponents.Controls.GLActivatedEmbeddedTypes.TextBox;
+            glColumn4.CheckBoxes = true;
+            glColumn4.ImageIndex = -1;
+            glColumn4.Name = "filename";
+            glColumn4.NumericSort = false;
+            glColumn4.Text = "  Destination Path";
+            glColumn4.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            glColumn4.Width = 530;
             this.glacialListPath.Columns.AddRange(new GlacialComponents.Controls.GLColumn[] {
-            glColumn2});
+            glColumn4});
             this.glacialListPath.ControlStyle = GlacialComponents.Controls.GLControlStyles.SuperFlat;
             this.glacialListPath.Dock = System.Windows.Forms.DockStyle.Fill;
             this.glacialListPath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
@@ -348,14 +401,12 @@ namespace MetaCopy
             this.autoCheck.AutoSize = true;
             this.autoCheck.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.autoCheck.Location = new System.Drawing.Point(196, 652);
+            this.autoCheck.Location = new System.Drawing.Point(139, 652);
             this.autoCheck.Name = "autoCheck";
-            this.autoCheck.Size = new System.Drawing.Size(84, 21);
+            this.autoCheck.Size = new System.Drawing.Size(141, 21);
             this.autoCheck.TabIndex = 19;
-            this.autoCheck.Text = "AutoCopy";
+            this.autoCheck.Text = "Auto Copy on Drop";
             this.autoCheck.UseVisualStyleBackColor = true;
-            this.autoCheck.Visible = false;
-            this.autoCheck.CheckedChanged += new System.EventHandler(this.onAutoCopyChecked);
             // 
             // deselectCheck
             // 
@@ -370,49 +421,6 @@ namespace MetaCopy
             this.deselectCheck.TabIndex = 20;
             this.deselectCheck.Text = "Deselect on Copy Complete";
             this.deselectCheck.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            this.button7.BackColor = System.Drawing.Color.Transparent;
-            this.button7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button7.FlatAppearance.BorderSize = 0;
-            this.button7.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
-            this.button7.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button7.Image = ((System.Drawing.Image)(resources.GetObject("button7.Image")));
-            this.button7.Location = new System.Drawing.Point(536, 3);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(26, 26);
-            this.button7.TabIndex = 20;
-            this.button7.UseVisualStyleBackColor = false;
-            this.button7.Click += new System.EventHandler(this.doMinimize);
-            // 
-            // button8
-            // 
-            this.button8.BackColor = System.Drawing.Color.Transparent;
-            this.button8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button8.FlatAppearance.BorderSize = 0;
-            this.button8.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
-            this.button8.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button8.Image = ((System.Drawing.Image)(resources.GetObject("button8.Image")));
-            this.button8.Location = new System.Drawing.Point(508, 3);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(26, 26);
-            this.button8.TabIndex = 21;
-            this.button8.UseVisualStyleBackColor = false;
-            this.button8.Visible = false;
-            // 
-            // LabelHint
-            // 
-            this.LabelHint.AutoSize = true;
-            this.LabelHint.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelHint.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.LabelHint.Location = new System.Drawing.Point(193, 116);
-            this.LabelHint.Name = "LabelHint";
-            this.LabelHint.Size = new System.Drawing.Size(137, 13);
-            this.LabelHint.TabIndex = 5;
-            this.LabelHint.Text = "Drag and Drop Files Here";
             // 
             // btnCopy
             // 
@@ -630,12 +638,16 @@ namespace MetaCopy
             this.Controls.Add(this.btnOpenPath);
             this.Controls.Add(label1);
             this.Controls.Add(this.panelTitle);
+            this.DataBindings.Add(new System.Windows.Forms.Binding("Location", global::MetaCopy.Properties.Settings.Default, "defaultPos", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = global::MetaCopy.Properties.Settings.Default.defaultPos;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(600, 732);
             this.MinimumSize = new System.Drawing.Size(600, 732);
             this.Name = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.onClosing);
+            this.Shown += new System.EventHandler(this.onFormShow);
             this.panelTitle.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -670,11 +682,11 @@ namespace MetaCopy
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.CheckBox autoCheck;
         private System.Windows.Forms.CheckBox deselectCheck;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label LabelHint;
+        public System.Windows.Forms.CheckBox autoCheck;
     }
 }
 

@@ -8,6 +8,7 @@ namespace MetaCopy
     class FileObject{
         public string Name { set; get; }
         public string Path { set; get; }
+        public string Ext { set; get; }
 
         public bool isSelected { set; get; }
         public bool isCut { set; get; }
@@ -16,10 +17,11 @@ namespace MetaCopy
 
         public FileObject(){}
 
-        public FileObject(string name, string path, bool isDirectory){
+        public FileObject(string name, string path, string ext, bool isSelected){
             this.Name = name;
             this.Path = path;
-            this.isDirectory = isDirectory;
+            this.Ext = ext;
+            this.isSelected = isSelected;
         }
     }
 }

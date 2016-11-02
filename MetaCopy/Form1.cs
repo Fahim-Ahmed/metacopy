@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using GlacialComponents.Controls;
+
 
 namespace MetaCopy {
     public partial class Form1 : Form {
@@ -22,6 +26,10 @@ namespace MetaCopy {
         private string watchPath;
         private bool isRunning;
 
+        private string userPath;
+        private MiniMode mm;
+        private bool deselectMode;
+
         public Form1() {
             InitializeComponent();
 
@@ -31,6 +39,14 @@ namespace MetaCopy {
 
             watcher = new FileSystemWatcher();
             watchPath = "";
+
+            userPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MetaCopy");
+
+            readObject(true);
+            readObject(false);
+
+            mm = new MiniMode();
+            mm.setMain(this);
         }
 
         private void startWatch(string path) {
@@ -93,14 +109,14 @@ namespace MetaCopy {
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
         }
 
-        private void panel1_DragDrop(object sender, DragEventArgs e) {
+        public void panel1_DragDrop(object sender, DragEventArgs e) {
             if (isRunning) return;
 
-            GlacialList gl = (GlacialList)sender;
+            Control gl = (Control) sender;
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                if (gl.Name == "glacialList"){
+                if (gl.Name == "glacialList" || gl.Name == "dropPanel"){
                     addFilesToList(files);
                     glacialList.Refresh();
                 } else {
@@ -199,6 +215,7 @@ namespace MetaCopy {
                 if (e.Item.SubItems[0].Checked) {
                     setSelectedColor(e.Item.SubItems[0]);
                     setSelectedColor(e.Item.SubItems[1]);
+                    setSelectedColor(e.Item.SubItems[2]);
 
                     glacialList.SelectedTextColor = Color.FromArgb(255, 36, 42, 52);
                     glacialList.SelectionColor = Color.FromArgb(255, 242, 208, 59);
@@ -206,6 +223,7 @@ namespace MetaCopy {
                 else {
                     setDefaultColor(e.Item.SubItems[0]);
                     setDefaultColor(e.Item.SubItems[1]);
+                    setDefaultColor(e.Item.SubItems[2]);
 
                     glacialList.SelectedTextColor = Color.FromArgb(255, 141, 151, 166);
                     glacialList.SelectionColor = Color.FromArgb(255, 29, 34, 41);
@@ -218,14 +236,12 @@ namespace MetaCopy {
             if (e.ChangedType == ChangedTypes.SelectionChanged || e.ChangedType == ChangedTypes.SubItemChanged) {
                 if (e.Item.SubItems[0].Checked) {
                     setSelectedColor(e.Item.SubItems[0]);
-                    setSelectedColor(e.Item.SubItems[1]);
 
                     glacialListPath.SelectedTextColor = Color.FromArgb(255, 36, 42, 52);
                     glacialListPath.SelectionColor = Color.FromArgb(255, 242, 208, 59);
                 }
                 else {
                     setDefaultColor(e.Item.SubItems[0]);
-                    setDefaultColor(e.Item.SubItems[1]);
 
                     glacialListPath.SelectedTextColor = Color.FromArgb(255, 141, 151, 166);
                     glacialListPath.SelectionColor = Color.FromArgb(255, 29, 34, 41);
@@ -343,6 +359,10 @@ namespace MetaCopy {
 
                 item.SubItems[1].Text = filePath;
                 item.SubItems[1].ForeColor = Color.FromArgb(255, 141, 151, 166);
+
+                item.SubItems[2].Text = Path.GetExtension(filePath);
+                item.SubItems[2].ForeColor = Color.FromArgb(255, 141, 151, 166);
+
                 c++;
             }
 
@@ -404,7 +424,7 @@ namespace MetaCopy {
             }
         }
 
-        private void doCopy(object sender, EventArgs e) {
+        public void doCopy(object sender, EventArgs e) {
             if (isRunning) return;
             new Thread(new ThreadStart(startCopy)).Start();
         }
@@ -431,6 +451,7 @@ namespace MetaCopy {
             }
 
             isRunning = true;
+            mm.copyStart();
 
             foreach (GLItem path in glacialListPath.Items) {
                 float count = getFileCount();
@@ -467,6 +488,7 @@ namespace MetaCopy {
                         setStatus("Failure. Unable to write " + filename + ". You are. Process terminated.", 2);
                         isRunning = false;
                         autoCheck.Checked = false;
+                        mm.copyEnd();
                         return;
                     }
                     catch (ArgumentException ex) {
@@ -474,6 +496,7 @@ namespace MetaCopy {
                         setStatus("Process terminated.", 2);
                         isRunning = false;
                         autoCheck.Checked = false;
+                        mm.copyEnd();
                         return;
                     }
                     catch (IOException ex) {
@@ -481,6 +504,7 @@ namespace MetaCopy {
                         setStatus("Unknown error. Check source path", 2);
                         isRunning = false;
                         autoCheck.Checked = false;
+                        mm.copyEnd();
                         return;
                     }
                 }
@@ -491,6 +515,7 @@ namespace MetaCopy {
             if (cutmode.Checked) deleteFiles();
 
             isRunning = false;
+            mm.copyEnd();
         }
 
         private void deleteFiles() {
@@ -521,6 +546,9 @@ namespace MetaCopy {
 
             Files = Directory.GetFileSystemEntries(Src);
 
+            float count = Files.Length;
+            int completed = 0;
+
             foreach (string Element in Files) {
                 // Sub directories
                 if (Directory.Exists(Element))
@@ -528,6 +556,10 @@ namespace MetaCopy {
                 // Files in directory
                 else
                     File.Copy(Element, Dst + Path.GetFileName(Element), true);
+
+                completed++;
+                float progress = (completed / count) * 100;
+                setStatus("Copying: " + progress.ToString("0.00") + "%", 1);
             }
         }
 
@@ -535,20 +567,141 @@ namespace MetaCopy {
             btnCopy.Text = (cutmode.Checked) ? "MOVE" : "COPY";
         }
 
-        private void onAutoCopyChecked(object sender, EventArgs e) {
-            if (glacialListPath.Items.Count == 0) {
-                autoCheck.Checked = false;
-                setStatus("Add destination path.", 2);
+        private void doMinimize(object sender, EventArgs e)
+        {
+            // this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void writeObject(GLItemCollection items, bool isSource) {
+            ArrayList objects = new ArrayList(items.Count);
+
+            foreach (GLItem item in items) {
+                FileObject f = new FileObject();
+
+                if (isSource) {
+                    f.Name = item.SubItems[0].Text;
+                    f.Path = item.SubItems[1].Text;
+                    f.Ext = item.SubItems[2].Text;
+                    f.isSelected = item.SubItems[0].Checked;
+                }
+                else {
+                    f.Path = item.SubItems[0].Text;
+                    f.isSelected = item.SubItems[0].Checked;
+                }
+
+                objects.Add(f);
             }
-            else {
-                setStatus("Auto copy / move started.", 1);
-                doCopy(this, null);
+
+            string path = Path.Combine(userPath, (isSource) ? "source.dat" : "dest.dat");
+
+            FileStream fs = null;
+            BinaryFormatter bf = new BinaryFormatter();
+            try {
+                fs = new FileStream(path, FileMode.Create);
+                bf.Serialize(fs, objects);
+            }
+            catch (SerializationException ex) {
+                setStatus("Write error.", 2);
+            }
+            catch (IOException ex) {
+                Console.WriteLine(ex.Message);
+            }
+            finally {
+                if (fs != null) fs.Close();
             }
         }
 
-        private void doMinimize(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
+        private void readObject(bool isSource) {
+            ArrayList objects;
+            string path = Path.Combine(userPath, (isSource) ? "source.dat" : "dest.dat");
+
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fs = null;
+
+            try {
+                if (!Directory.Exists(userPath)) Directory.CreateDirectory(userPath);
+                fs = new FileStream(path, FileMode.Open);
+                objects = (ArrayList)bf.Deserialize(fs);
+                fs.Close();
+            }
+            catch (IOException ex) {
+                Console.WriteLine("No pref.");
+                if(fs != null) fs.Close();
+                return;
+            }
+
+            if (isSource) {
+                glacialList.Items.Clear();
+
+                foreach (FileObject f in objects) {
+                    GLItem i = new GLItem();
+                    i.SubItems[0].Text = f.Name;
+                    i.SubItems[1].Text = f.Path;
+                    i.SubItems[2].Text = f.Ext;
+                    i.ForeColor = Color.FromArgb(255, 141, 151, 166);
+
+                    if (f.isSelected){
+                        setSelectedColor(i.SubItems[0]);
+                        setSelectedColor(i.SubItems[1]);
+                        setSelectedColor(i.SubItems[2]);
+                    }
+                    else{
+                        setDefaultColor(i.SubItems[0]);
+                        setDefaultColor(i.SubItems[1]);
+                        setDefaultColor(i.SubItems[2]);
+                    }
+
+                    glacialList.Items.Add(i);
+                    i.SubItems[0].Checked = f.isSelected;
+                }
+
+                LabelHint.Visible = glacialList.Items.Count == 0;
+                glacialList.Refresh();
+            }
+            else {
+                glacialListPath.Items.Clear();
+
+                foreach (FileObject f in objects) {
+                    GLItem i = new GLItem();
+                    i.SubItems[0].Text = f.Path;
+                    
+                    glacialListPath.Items.Add(i);
+                    i.SubItems[0].Checked = f.isSelected;
+
+                    i.ForeColor = Color.FromArgb(255, 141, 151, 166);
+                    if(f.isSelected) setSelectedColor(i.SubItems[0]);
+                    else setDefaultColor(i.SubItems[0]);
+
+                }
+
+                glacialListPath.Refresh();
+            }
+        }
+
+        private void onClosing(object sender, FormClosingEventArgs e) {
+            writeObject(glacialList.Items, true);
+            writeObject(glacialListPath.Items, false);
+
+            Console.WriteLine("Content saved.");
+        }
+
+        private void doMiniMode(object sender, EventArgs e) {
+            int sw = Screen.FromControl(this).WorkingArea.Width;
+            int sh = Screen.FromControl(this).WorkingArea.Height;
+
+            mm.TopMost = true;
+            mm.StartPosition = FormStartPosition.Manual;
+            mm.DesktopLocation = new Point(sw - mm.Size.Width - 8, sh - mm.Size.Height - 8);
+            mm.Show();
+
+            deselectMode = deselectCheck.Checked;
+            deselectCheck.Checked = false;
+
+            Hide();
+        }
+
+        private void onFormShow(object sender, EventArgs e){
+            deselectCheck.Checked = deselectMode;
         }
     }
 }
