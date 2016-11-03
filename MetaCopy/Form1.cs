@@ -134,18 +134,6 @@ namespace MetaCopy {
             LabelHint.Visible = (glacialList.Items.Count == 0);
         }
 
-        private void addDestPath(string path) {
-            if (hasThisPath(path)) return;
-
-            GLItem item = new GLItem();
-            item.ForeColor = Color.FromArgb(255, 141, 151, 166);
-            item.SubItems[0].Text = path;
-            item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
-            glacialListPath.Items.Add(item);
-
-            item.SubItems[0].Checked = true;
-        }
-
         private bool hasThisFile(string path) {
             if (glacialList.Items.Count == 0) return false;
 
@@ -349,8 +337,6 @@ namespace MetaCopy {
                     }
                     break;
             }
-
-            
         }
 
         public void addFilesToList(string[] files) {
@@ -525,6 +511,38 @@ namespace MetaCopy {
 
             isRunning = false;
             mm.copyEnd();
+        }
+
+        private void addDestPath(string path) {
+            if (hasThisPath(path)) return;
+
+            try {
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            }
+            catch (ArgumentException ex) {
+                MessageBox.Show("Invalid path.", "Error");
+                setStatus("Process terminated.", 2);
+                isRunning = false;
+                autoCheck.Checked = false;
+                mm.copyEnd();
+                return;
+            }
+            catch (IOException ex) {
+                MessageBox.Show("Unknown error. Check source path", "Error");
+                setStatus("Unknown error. Check source path", 2);
+                isRunning = false;
+                autoCheck.Checked = false;
+                mm.copyEnd();
+                return;
+            }
+
+            GLItem item = new GLItem();
+            item.ForeColor = Color.FromArgb(255, 141, 151, 166);
+            item.SubItems[0].Text = path;
+            item.SubItems[0].ForeColor = Color.FromArgb(255, 141, 151, 166);
+            glacialListPath.Items.Add(item);
+
+            item.SubItems[0].Checked = true;
         }
 
         private void deleteFiles() {
@@ -723,6 +741,8 @@ namespace MetaCopy {
         }
 
         private void onPasteBtn(object sender, EventArgs e) {
+            if (isRunning) return;
+
             if (pastebox.Text != pastehinttext) {
                 addDestPath(pastebox.Text);
                 glacialListPath.Refresh();
@@ -739,6 +759,10 @@ namespace MetaCopy {
 
         private void onPasteTextChange(object sender, EventArgs e) {
             if (pastebox.Text == "") pastebox.Text = pastehinttext;
+        }
+
+        private void onPasteboxFocusLeave(object sender, EventArgs e) {
+            pastebox.SelectionLength = 0;
         }
     }
 }

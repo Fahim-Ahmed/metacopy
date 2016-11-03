@@ -456,7 +456,6 @@ namespace MetaCopy
             // 
             // pastebox
             // 
-            this.pastebox.AcceptsReturn = true;
             this.pastebox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(34)))), ((int)(((byte)(41)))));
             this.pastebox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.pastebox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -472,6 +471,7 @@ namespace MetaCopy
             this.pastebox.Click += new System.EventHandler(this.onClickPastebox);
             this.pastebox.TextChanged += new System.EventHandler(this.onPasteTextChange);
             this.pastebox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.onPasteAccept);
+            this.pastebox.Leave += new System.EventHandler(this.onPasteboxFocusLeave);
             // 
             // button10
             // 
