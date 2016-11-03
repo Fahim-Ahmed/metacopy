@@ -16,6 +16,7 @@ namespace MetaCopy {
         private const int HT_CLIENT = 0x1;
         private const int HT_CAPTION = 0x2;
         public const int WM_NCLBUTTONDOWN = 0xA1;
+        private const string pastehinttext = "paste path here to add";
 
         [DllImportAttribute("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
@@ -112,17 +113,17 @@ namespace MetaCopy {
         public void panel1_DragDrop(object sender, DragEventArgs e) {
             if (isRunning) return;
 
-            Control gl = (Control) sender;
+            Control gl = (Control)sender;
             if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                if (gl.Name == "glacialList" || gl.Name == "dropPanel"){
+                if (gl.Name == "glacialList" || gl.Name == "dropPanel") {
                     addFilesToList(files);
                     glacialList.Refresh();
-                } else {
-                    foreach (string path in files)
-                    {
-                        if (File.GetAttributes(path).HasFlag(FileAttributes.Directory)){
+                }
+                else {
+                    foreach (string path in files) {
+                        if (File.GetAttributes(path).HasFlag(FileAttributes.Directory)) {
                             addDestPath(path);
                         }
                     }
@@ -149,8 +150,7 @@ namespace MetaCopy {
             if (glacialList.Items.Count == 0) return false;
 
             foreach (GLItem item in glacialList.Items) {
-                if (item.SubItems[1].Text == path)
-                {
+                if (item.SubItems[1].Text == path) {
                     item.SubItems[0].Checked = true;
                     return true;
                 }
@@ -312,17 +312,17 @@ namespace MetaCopy {
             Control btn = (Control)sender;
 
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            DialogResult result = fbd.ShowDialog();
 
-            if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
-                string[] files = Directory.GetFiles(fbd.SelectedPath);
-                string[] dir = Directory.GetDirectories(fbd.SelectedPath);
+            switch (btn.Name) {
+                case "pathLabel":
+                case "btnOpenPath":
+                    fbd.ShowDialog();
 
-                //MessageBox.Show("Files found: " + files.Length.ToString(), "Message");
+                    if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)) {
 
-                switch (btn.Name) {
-                    case "pathLabel":
-                    case "btnOpenPath":
+                        string[] files = Directory.GetFiles(fbd.SelectedPath);
+                        string[] dir = Directory.GetDirectories(fbd.SelectedPath);
+
                         addFilesToList(dir);
                         addFilesToList(files);
                         pathLabel.Text = fbd.SelectedPath.ToLower();
@@ -332,22 +332,32 @@ namespace MetaCopy {
                         glacialList.Refresh();
 
                         LabelHint.Visible = (glacialList.Items.Count == 0);
+                    }
 
-                        break;
-                    case "btnAddDestPath":
-                        addDestPath(fbd.SelectedPath);
-                        glacialListPath.Refresh();
-                        break;
-                }
+                    break;
+                case "btnAddDestPath":
+                    if (pastebox.Text != pastehinttext)
+                        onPasteBtn(this, null);
+                    else {
+                        fbd.ShowDialog();
+
+                        if (!string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                        {
+                            addDestPath(fbd.SelectedPath);
+                            glacialListPath.Refresh();
+                        }
+                    }
+                    break;
             }
+
+            
         }
 
-        public void addFilesToList(string[] files)
-        {
+        public void addFilesToList(string[] files) {
             int c = 0;
             foreach (string filePath in files) {
-                if (hasThisFile(filePath)) { continue;}
-                if (hasThisInPath(filePath)){
+                if (hasThisFile(filePath)) { continue; }
+                if (hasThisInPath(filePath)) {
                     setStatus(Path.GetFileName(filePath) + ". Folder already in destination path", 2);
                     continue;
                 }
@@ -369,8 +379,7 @@ namespace MetaCopy {
             setStatus("File(s) added: " + c, 0);
         }
 
-        private bool hasThisInPath(string path)
-        {
+        private bool hasThisInPath(string path) {
             if (glacialListPath.Items.Count == 0) return false;
 
             foreach (GLItem item in glacialListPath.Items) {
@@ -457,8 +466,8 @@ namespace MetaCopy {
                 float count = getFileCount();
                 int completed = 0;
 
-                if(!path.SubItems[0].Checked) continue;
-                
+                if (!path.SubItems[0].Checked) continue;
+
                 setStatus("Copying: 0%", 1);
 
                 foreach (GLItem item in glacialList.Items) {
@@ -476,8 +485,8 @@ namespace MetaCopy {
                             copyDirectory(sourcePath, destFile);
                         else File.Copy(sourcePath, destFile, true);
 
-                        if(deselectCheck.Checked)
-                            Invoke((MethodInvoker) delegate { item.SubItems[0].Checked = false; });
+                        if (deselectCheck.Checked)
+                            Invoke((MethodInvoker)delegate { item.SubItems[0].Checked = false; });
 
                         completed++;
                         float progress = (completed / count) * 100;
@@ -567,8 +576,7 @@ namespace MetaCopy {
             btnCopy.Text = (cutmode.Checked) ? "MOVE" : "COPY";
         }
 
-        private void doMinimize(object sender, EventArgs e)
-        {
+        private void doMinimize(object sender, EventArgs e) {
             // this.WindowState = FormWindowState.Minimized;
         }
 
@@ -626,7 +634,7 @@ namespace MetaCopy {
             }
             catch (IOException ex) {
                 Console.WriteLine("No pref.");
-                if(fs != null) fs.Close();
+                if (fs != null) fs.Close();
                 return;
             }
 
@@ -640,12 +648,12 @@ namespace MetaCopy {
                     i.SubItems[2].Text = f.Ext;
                     i.ForeColor = Color.FromArgb(255, 141, 151, 166);
 
-                    if (f.isSelected){
+                    if (f.isSelected) {
                         setSelectedColor(i.SubItems[0]);
                         setSelectedColor(i.SubItems[1]);
                         setSelectedColor(i.SubItems[2]);
                     }
-                    else{
+                    else {
                         setDefaultColor(i.SubItems[0]);
                         setDefaultColor(i.SubItems[1]);
                         setDefaultColor(i.SubItems[2]);
@@ -664,12 +672,12 @@ namespace MetaCopy {
                 foreach (FileObject f in objects) {
                     GLItem i = new GLItem();
                     i.SubItems[0].Text = f.Path;
-                    
+
                     glacialListPath.Items.Add(i);
                     i.SubItems[0].Checked = f.isSelected;
 
                     i.ForeColor = Color.FromArgb(255, 141, 151, 166);
-                    if(f.isSelected) setSelectedColor(i.SubItems[0]);
+                    if (f.isSelected) setSelectedColor(i.SubItems[0]);
                     else setDefaultColor(i.SubItems[0]);
 
                 }
@@ -700,8 +708,37 @@ namespace MetaCopy {
             Hide();
         }
 
-        private void onFormShow(object sender, EventArgs e){
+        private void onFormShow(object sender, EventArgs e) {
             deselectCheck.Checked = deselectMode;
+        }
+
+        private void onPasteAccept(object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.Enter)
+                onPasteBtn(this, null);
+        }
+
+        private void onClearPaste(object sender, EventArgs e) {
+            pastebox.Clear();
+            pastebox.Text = pastehinttext;
+        }
+
+        private void onPasteBtn(object sender, EventArgs e) {
+            if (pastebox.Text != pastehinttext) {
+                addDestPath(pastebox.Text);
+                glacialListPath.Refresh();
+
+                pastebox.Text = pastehinttext;
+            }
+        }
+
+        private void onClickPastebox(object sender, EventArgs e) {
+            if (pastebox.Text == pastehinttext) {
+                pastebox.SelectAll();
+            }
+        }
+
+        private void onPasteTextChange(object sender, EventArgs e) {
+            if (pastebox.Text == "") pastebox.Text = pastehinttext;
         }
     }
 }
