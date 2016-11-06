@@ -11,6 +11,7 @@ using GlacialComponents.Controls;
 
 
 namespace MetaCopy {
+
     public partial class Form1 : Form {
         private const int WM_NCHITTEST = 0x84;
         private const int HT_CLIENT = 0x1;
@@ -28,8 +29,9 @@ namespace MetaCopy {
         private bool isRunning;
 
         private string userPath;
-        private MiniMode mm;
         private bool deselectMode;
+
+        private MiniMode mm;
         private PrefWindow pref;
 
         public Form1() {
@@ -51,6 +53,11 @@ namespace MetaCopy {
             mm.setMain(this);
 
             pref = new PrefWindow();
+
+            foreach (string s in Environment.GetCommandLineArgs())
+            {
+                Console.WriteLine(s);
+            }
         }
 
         private void startWatch(string path) {
@@ -769,8 +776,6 @@ namespace MetaCopy {
         }
 
         private void onPrefClick(object sender, EventArgs e) {
-            int sw = Screen.FromControl(this).WorkingArea.Width;
-            int sh = Screen.FromControl(this).WorkingArea.Height;
             int fx = DesktopLocation.X;
             int fy = DesktopLocation.Y;
 
