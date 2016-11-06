@@ -30,6 +30,7 @@ namespace MetaCopy {
         private string userPath;
         private MiniMode mm;
         private bool deselectMode;
+        private PrefWindow pref;
 
         public Form1() {
             InitializeComponent();
@@ -48,6 +49,8 @@ namespace MetaCopy {
 
             mm = new MiniMode();
             mm.setMain(this);
+
+            pref = new PrefWindow();
         }
 
         private void startWatch(string path) {
@@ -763,6 +766,20 @@ namespace MetaCopy {
 
         private void onPasteboxFocusLeave(object sender, EventArgs e) {
             pastebox.SelectionLength = 0;
+        }
+
+        private void onPrefClick(object sender, EventArgs e) {
+            int sw = Screen.FromControl(this).WorkingArea.Width;
+            int sh = Screen.FromControl(this).WorkingArea.Height;
+            int fx = DesktopLocation.X;
+            int fy = DesktopLocation.Y;
+
+            pref.StartPosition = FormStartPosition.Manual;
+            pref.DesktopLocation = new Point(fx + Size.Width + 8, fy);
+            pref.Show();
+
+            deselectMode = deselectCheck.Checked;
+            deselectCheck.Checked = false;
         }
     }
 }

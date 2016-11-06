@@ -32,12 +32,12 @@ namespace MetaCopy
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label1;
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            MetaCopy.Components.CustomLabel customLabel1;
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn4 = new GlacialComponents.Controls.GLColumn();
-            MetaCopy.Components.CustomLabel customLabel1;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panelTitle = new System.Windows.Forms.Panel();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -68,6 +68,7 @@ namespace MetaCopy
             this.button3 = new MetaCopy.Components.CustomButton();
             this.button2 = new MetaCopy.Components.CustomButton();
             this.button1 = new MetaCopy.Components.CustomButton();
+            this.button11 = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             customLabel1 = new MetaCopy.Components.CustomLabel();
             this.panelTitle.SuspendLayout();
@@ -89,9 +90,23 @@ namespace MetaCopy
             label1.Text = "Watch Folder";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // customLabel1
+            // 
+            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
+            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
+            customLabel1.Location = new System.Drawing.Point(0, 0);
+            customLabel1.Name = "customLabel1";
+            customLabel1.Size = new System.Drawing.Size(120, 32);
+            customLabel1.TabIndex = 0;
+            customLabel1.Text = "METACOPY";
+            customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            // 
             // panelTitle
             // 
             this.panelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.panelTitle.Controls.Add(this.button11);
             this.panelTitle.Controls.Add(this.button8);
             this.panelTitle.Controls.Add(this.button7);
             this.panelTitle.Controls.Add(this.btnClose);
@@ -666,18 +681,21 @@ namespace MetaCopy
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.onButtonClick);
             // 
-            // customLabel1
+            // button11
             // 
-            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
-            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
-            customLabel1.Location = new System.Drawing.Point(0, 0);
-            customLabel1.Name = "customLabel1";
-            customLabel1.Size = new System.Drawing.Size(120, 32);
-            customLabel1.TabIndex = 0;
-            customLabel1.Text = "METACOPY";
-            customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.button11.BackColor = System.Drawing.Color.Transparent;
+            this.button11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button11.FlatAppearance.BorderSize = 0;
+            this.button11.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.button11.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button11.Image = ((System.Drawing.Image)(resources.GetObject("button11.Image")));
+            this.button11.Location = new System.Drawing.Point(481, 3);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(26, 26);
+            this.button11.TabIndex = 22;
+            this.button11.UseVisualStyleBackColor = false;
+            this.button11.Click += new System.EventHandler(this.onPrefClick);
             // 
             // Form1
             // 
@@ -762,6 +780,7 @@ namespace MetaCopy
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.TextBox pastebox;
         private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button11;
     }
 }
 
