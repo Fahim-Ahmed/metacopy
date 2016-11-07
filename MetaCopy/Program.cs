@@ -6,7 +6,7 @@ namespace MetaCopy
 {
     static class Program
     {
-        static Mutex mutex = new Mutex(true, "{5DA59A77-C4C8-42D5-A739-37B0075DD116}");
+        static Mutex mutex = new Mutex(true, "{8ED6F2DD-F07F-437D-B993-52D8BF249201}");
 
         [STAThread]
         static void Main()

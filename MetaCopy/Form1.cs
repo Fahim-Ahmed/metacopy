@@ -9,7 +9,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using GlacialComponents.Controls;
 
-
 namespace MetaCopy {
 
     public partial class Form1 : Form {
@@ -54,8 +53,7 @@ namespace MetaCopy {
 
             pref = new PrefWindow();
 
-            foreach (string s in Environment.GetCommandLineArgs())
-            {
+            foreach (string s in Environment.GetCommandLineArgs()){
                 Console.WriteLine(s);
             }
         }
