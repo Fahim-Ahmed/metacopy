@@ -196,7 +196,18 @@ namespace MetaCopy {
         }
 
         protected override void WndProc(ref Message m) {
+            if (m.Msg == NativeMethods.WM_SHOWME) {
+                if (WindowState == FormWindowState.Minimized) {
+                    WindowState = FormWindowState.Normal;
+                }
+
+                bool top = TopMost;
+                TopMost = true;
+                TopMost = top;
+            }
+
             base.WndProc(ref m);
+
             if (m.Msg == WM_NCHITTEST)
                 m.Result = (IntPtr)(HT_CAPTION);
         }
@@ -598,7 +609,7 @@ namespace MetaCopy {
         }
 
         private void doMinimize(object sender, EventArgs e) {
-            // this.WindowState = FormWindowState.Minimized;
+             this.WindowState = FormWindowState.Minimized;
         }
 
         private void writeObject(GLItemCollection items, bool isSource) {
