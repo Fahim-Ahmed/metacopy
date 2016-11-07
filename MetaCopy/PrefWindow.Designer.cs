@@ -24,49 +24,11 @@
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrefWindow));
-            this.btnReg = new MetaCopy.Components.CustomButton();
-            this.customButton1 = new MetaCopy.Components.CustomButton();
             this.LabelHint = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
+            this.customButton1 = new MetaCopy.Components.CustomButton();
+            this.btnReg = new MetaCopy.Components.CustomButton();
             this.SuspendLayout();
-            // 
-            // btnReg
-            // 
-            this.btnReg.backColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
-            this.btnReg.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
-            this.btnReg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnReg.FlatAppearance.BorderSize = 0;
-            this.btnReg.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
-            this.btnReg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReg.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.btnReg.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.btnReg.Location = new System.Drawing.Point(35, 68);
-            this.btnReg.Name = "btnReg";
-            this.btnReg.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
-            this.btnReg.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
-            this.btnReg.Size = new System.Drawing.Size(177, 32);
-            this.btnReg.TabIndex = 7;
-            this.btnReg.Text = "Register Handler";
-            this.btnReg.UseVisualStyleBackColor = false;
-            // 
-            // customButton1
-            // 
-            this.customButton1.backColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
-            this.customButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
-            this.customButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.customButton1.FlatAppearance.BorderSize = 0;
-            this.customButton1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
-            this.customButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton1.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
-            this.customButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.customButton1.Location = new System.Drawing.Point(35, 106);
-            this.customButton1.Name = "customButton1";
-            this.customButton1.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.customButton1.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
-            this.customButton1.Size = new System.Drawing.Size(177, 32);
-            this.customButton1.TabIndex = 8;
-            this.customButton1.Text = "Deregister Handler";
-            this.customButton1.UseVisualStyleBackColor = false;
             // 
             // LabelHint
             // 
@@ -94,6 +56,46 @@
             this.btnClose.TabIndex = 20;
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.onCloseBtn);
+            // 
+            // customButton1
+            // 
+            this.customButton1.backColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
+            this.customButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
+            this.customButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.customButton1.FlatAppearance.BorderSize = 0;
+            this.customButton1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.customButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customButton1.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
+            this.customButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
+            this.customButton1.Location = new System.Drawing.Point(35, 106);
+            this.customButton1.Name = "customButton1";
+            this.customButton1.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.customButton1.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
+            this.customButton1.Size = new System.Drawing.Size(177, 32);
+            this.customButton1.TabIndex = 8;
+            this.customButton1.Text = "Deregister Handler";
+            this.customButton1.UseVisualStyleBackColor = false;
+            this.customButton1.Click += new System.EventHandler(this.onDeregisterBtn);
+            // 
+            // btnReg
+            // 
+            this.btnReg.backColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
+            this.btnReg.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(46)))), ((int)(((byte)(56)))));
+            this.btnReg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnReg.FlatAppearance.BorderSize = 0;
+            this.btnReg.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.btnReg.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReg.foreColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.btnReg.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
+            this.btnReg.Location = new System.Drawing.Point(35, 68);
+            this.btnReg.Name = "btnReg";
+            this.btnReg.onPressBackColour = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(208)))), ((int)(((byte)(59)))));
+            this.btnReg.onPressForeColour = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
+            this.btnReg.Size = new System.Drawing.Size(177, 32);
+            this.btnReg.TabIndex = 7;
+            this.btnReg.Text = "Register Handler";
+            this.btnReg.UseVisualStyleBackColor = false;
+            this.btnReg.Click += new System.EventHandler(this.onRegisterBtn);
             // 
             // PrefWindow
             // 
