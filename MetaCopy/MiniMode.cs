@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace MetaCopy {
 
     public partial class MiniMode : Form {
-        private Form1 mainForm;
+        private MetaCore mainForm;
 
         private const int WM_NCHITTEST = 0x84;
         private const int HT_CAPTION = 0x2;
@@ -27,7 +27,7 @@ namespace MetaCopy {
             InitializeComponent();
         }
 
-        public void setMain(Form1 form)
+        public void setMain(MetaCore form)
         {
             this.mainForm = form;
         }

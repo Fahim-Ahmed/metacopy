@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
-using Microsoft.Win32;
 using SharpShell.Diagnostics;
 using SharpShell.ServerRegistration;
 
@@ -22,15 +20,15 @@ namespace MetaCopy {
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
-        private RegistryKey regMenu;
-        private RegistryKey regCmd;
-        private string menuName = "Folder\\shell\\MetaCopy";
-        private string menuCmd = "Folder\\shell\\MetaCopy\\command";
-        private string menuValue = "Add to MetaCopy";
-        private IEnumerable<ServerEntry> serverEntry;
+        private MetaCopyExt server;
 
         public PrefWindow() {
             InitializeComponent();
+            server = new MetaCopyExt();
+        }
+
+        public void setServer(MetaCopyExt ext){
+            this.server = ext;
         }
 
         protected override void WndProc(ref Message m) {
@@ -50,79 +48,30 @@ namespace MetaCopy {
             Hide();
         }
 
-        private void onRegisterBtn(object sender, EventArgs e){
-            string path = "H:\\Projekt\\WindowsApp\\MetaCopy\\MetaCopy\\libs\\MetaCopyShellExt.dll";
-            serverEntry = ServerManagerApi.LoadServers(path);
-
-            foreach (ServerEntry se in serverEntry) {
-                if (InternalCheckIsWow64()) {
-                    ServerRegistrationManager.InstallServer(se.Server, RegistrationType.OS64Bit, true);
-                    ServerRegistrationManager.RegisterServer(se.Server, RegistrationType.OS64Bit);
-
-                    Console.WriteLine("64bit Platform");
-                }
-                else {
-                    ServerRegistrationManager.InstallServer(se.Server, RegistrationType.OS32Bit, true);
-                    ServerRegistrationManager.RegisterServer(se.Server, RegistrationType.OS32Bit);
-                }
+        private void onRegisterBtn(object sender, EventArgs e) {
+            if (InternalCheckIsWow64()) {
+                ServerRegistrationManager.InstallServer(server, RegistrationType.OS64Bit, true);
+                ServerRegistrationManager.RegisterServer(server, RegistrationType.OS64Bit);
+            }
+            else {
+                ServerRegistrationManager.InstallServer(server, RegistrationType.OS32Bit, true);
+                ServerRegistrationManager.RegisterServer(server, RegistrationType.OS32Bit);
             }
 
             ExplorerManager.RestartExplorer();
-            //            try{
-            //                CheckSecurity();
-            //
-            //                regMenu = Registry.ClassesRoot.CreateSubKey(menuName);
-            //                if (regMenu != null) regMenu.SetValue("", menuValue);
-            //
-            //                regCmd = Registry.ClassesRoot.CreateSubKey(menuCmd);
-            //                if (regCmd != null) regCmd.SetValue("", Application.ExecutablePath + " %1");
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                MessageBox.Show(this, ex.ToString());
-            //            }
-            //            finally
-            //            {
-            //                if (regMenu != null)
-            //                    regMenu.Close();
-            //                if (regCmd != null)
-            //                    regCmd.Close();
-            //            }
         }
 
-        private void onDeregisterBtn(object sender, EventArgs e)
-        {
-            string path = "H:\\Projekt\\WindowsApp\\MetaCopy\\MetaCopy\\libs\\MetaCopyShellExt.dll";
-            serverEntry = ServerManagerApi.LoadServers(path);
-
-            foreach (ServerEntry se in serverEntry) {
-                if (InternalCheckIsWow64()) {
-                    ServerRegistrationManager.UninstallServer(se.Server, RegistrationType.OS64Bit);
-
-                    Console.WriteLine("64bit Platform");
-                }
-                else {
-                    ServerRegistrationManager.UninstallServer(se.Server, RegistrationType.OS32Bit);
-                }
+        private void onDeregisterBtn(object sender, EventArgs e) {
+            if (InternalCheckIsWow64()) {
+                ServerRegistrationManager.UnregisterServer(server, RegistrationType.OS64Bit);
+                ServerRegistrationManager.UninstallServer(server, RegistrationType.OS64Bit);
+            }
+            else {
+                ServerRegistrationManager.UnregisterServer(server, RegistrationType.OS32Bit);
+                ServerRegistrationManager.UninstallServer(server, RegistrationType.OS32Bit);
             }
 
             ExplorerManager.RestartExplorer();
-            //            try{
-            //                RegistryKey reg = Registry.ClassesRoot.OpenSubKey(menuCmd);
-            //                if (reg != null){
-            //                    reg.Close();
-            //                    Registry.ClassesRoot.DeleteSubKey(menuCmd);
-            //                }
-            //
-            //                reg = Registry.ClassesRoot.OpenSubKey(menuName);
-            //                if (reg != null){
-            //                    reg.Close();
-            //                    Registry.ClassesRoot.DeleteSubKey(menuName);
-            //                }
-            //            }
-            //            catch (Exception ex){
-            //                MessageBox.Show(this, ex.ToString());
-            //            }
         }
 
         [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
@@ -143,18 +92,8 @@ namespace MetaCopy {
                     return retVal;
                 }
             }
-            else {
-                return false;
-            }
-        }
 
-        private void CheckSecurity(){
-            //check registry permissions
-            RegistryPermission regPerm;
-            regPerm = new RegistryPermission(RegistryPermissionAccess.Write, "HKEY_CLASSES_ROOT\\" + menuName);
-            regPerm.AddPathList(RegistryPermissionAccess.Write, "HKEY_CLASSES_ROOT\\" + menuCmd);
-            regPerm.Demand();
-
+            return false;
         }
 
         //FOR GROUP BOX

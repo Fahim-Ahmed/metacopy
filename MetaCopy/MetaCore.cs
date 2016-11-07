@@ -11,7 +11,7 @@ using GlacialComponents.Controls;
 
 namespace MetaCopy {
 
-    public partial class Form1 : Form {
+    public partial class MetaCore : Form {
         private const int WM_NCHITTEST = 0x84;
         private const int HT_CLIENT = 0x1;
         private const int HT_CAPTION = 0x2;
@@ -32,8 +32,9 @@ namespace MetaCopy {
 
         private MiniMode mm;
         private PrefWindow pref;
+        private MetaCopyExt ext;
 
-        public Form1() {
+        public MetaCore() {
             InitializeComponent();
 
             glacialList.BringToFront();
@@ -52,6 +53,11 @@ namespace MetaCopy {
             mm.setMain(this);
 
             pref = new PrefWindow();
+            
+//            string envName = "MetaCopyPath";
+//            if (Environment.GetEnvironmentVariable(envName, EnvironmentVariableTarget.User) == null){
+//                Environment.SetEnvironmentVariable(envName, Application.ExecutablePath, EnvironmentVariableTarget.User);
+//            }
 
             foreach (string s in Environment.GetCommandLineArgs()){
                 Console.WriteLine(s);
