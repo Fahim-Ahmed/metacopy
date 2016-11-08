@@ -85,6 +85,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="XDMessaging, Version=5.0.1.0, Culture=neutral, PublicKeyToken=737bc70442f2c4af, processorArchitecture=MSIL">
+      <HintPath>..\packages\XDMessaging.5.0.1\lib\net40-Client\XDMessaging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\BorderedPanel.cs">

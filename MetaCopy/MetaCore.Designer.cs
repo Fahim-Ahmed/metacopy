@@ -33,12 +33,13 @@ namespace MetaCopy
         {
             System.Windows.Forms.Label label1;
             MetaCopy.Components.CustomLabel customLabel1;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MetaCore));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn4 = new GlacialComponents.Controls.GLColumn();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MetaCore));
             this.panelTitle = new System.Windows.Forms.Panel();
+            this.button11 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
@@ -68,7 +69,6 @@ namespace MetaCopy
             this.button3 = new MetaCopy.Components.CustomButton();
             this.button2 = new MetaCopy.Components.CustomButton();
             this.button1 = new MetaCopy.Components.CustomButton();
-            this.button11 = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
             customLabel1 = new MetaCopy.Components.CustomLabel();
             this.panelTitle.SuspendLayout();
@@ -116,6 +116,22 @@ namespace MetaCopy
             this.panelTitle.Size = new System.Drawing.Size(600, 32);
             this.panelTitle.TabIndex = 0;
             this.panelTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel_MouseMove);
+            // 
+            // button11
+            // 
+            this.button11.BackColor = System.Drawing.Color.Transparent;
+            this.button11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button11.FlatAppearance.BorderSize = 0;
+            this.button11.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.button11.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button11.Image = ((System.Drawing.Image)(resources.GetObject("button11.Image")));
+            this.button11.Location = new System.Drawing.Point(481, 3);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(26, 26);
+            this.button11.TabIndex = 22;
+            this.button11.UseVisualStyleBackColor = false;
+            this.button11.Click += new System.EventHandler(this.onPrefClick);
             // 
             // button8
             // 
@@ -681,23 +697,7 @@ namespace MetaCopy
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.onButtonClick);
             // 
-            // button11
-            // 
-            this.button11.BackColor = System.Drawing.Color.Transparent;
-            this.button11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button11.FlatAppearance.BorderSize = 0;
-            this.button11.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
-            this.button11.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button11.Image = ((System.Drawing.Image)(resources.GetObject("button11.Image")));
-            this.button11.Location = new System.Drawing.Point(481, 3);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(26, 26);
-            this.button11.TabIndex = 22;
-            this.button11.UseVisualStyleBackColor = false;
-            this.button11.Click += new System.EventHandler(this.onPrefClick);
-            // 
-            // Form1
+            // MetaCore
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -732,7 +732,7 @@ namespace MetaCopy
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(600, 748);
             this.MinimumSize = new System.Drawing.Size(600, 748);
-            this.Name = "Form1";
+            this.Name = "MetaCore";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.onClosing);
             this.Shown += new System.EventHandler(this.onFormShow);
             this.panelTitle.ResumeLayout(false);

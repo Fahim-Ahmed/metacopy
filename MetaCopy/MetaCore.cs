@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -7,7 +8,10 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using System.Linq;
 using GlacialComponents.Controls;
+using XDMessaging;
+using XDMessaging.Messages;
 
 namespace MetaCopy {
 
@@ -17,6 +21,9 @@ namespace MetaCopy {
         private const int HT_CAPTION = 0x2;
         public const int WM_NCLBUTTONDOWN = 0xA1;
         private const string pastehinttext = "paste path here to add";
+
+        public static string envName = "MetaCopyPath";
+        public static string channelName = "MetaChannel";
 
         [DllImportAttribute("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
@@ -54,14 +61,18 @@ namespace MetaCopy {
 
             pref = new PrefWindow();
             
-//            string envName = "MetaCopyPath";
-//            if (Environment.GetEnvironmentVariable(envName, EnvironmentVariableTarget.User) == null){
-//                Environment.SetEnvironmentVariable(envName, Application.ExecutablePath, EnvironmentVariableTarget.User);
-//            }
-
-            foreach (string s in Environment.GetCommandLineArgs()){
-                Console.WriteLine(s);
+            if (Environment.GetEnvironmentVariable(envName, EnvironmentVariableTarget.User) == null){
+                Environment.SetEnvironmentVariable(envName, Application.ExecutablePath, EnvironmentVariableTarget.User);
             }
+
+            startListener();
+
+            //Notify MetaCopy is running.
+            XDMessagingClient client = new XDMessagingClient();
+            IXDBroadcaster broadcaster = client.Broadcasters.GetWindowsMessagingBroadcaster();
+            broadcaster.SendToChannel("MetaStartChannel", "ProcessStarted");
+
+            //foreach (string s in Environment.GetCommandLineArgs()){ Console.WriteLine(s); }
         }
 
         private void startWatch(string path) {
@@ -387,6 +398,7 @@ namespace MetaCopy {
                 c++;
             }
 
+            if (c > 0) LabelHint.Visible = false;
             setStatus("File(s) added: " + c, 0);
         }
 
@@ -800,6 +812,31 @@ namespace MetaCopy {
 
             deselectMode = deselectCheck.Checked;
             deselectCheck.Checked = false;
+        }
+
+        private void startListener() {
+            XDMessagingClient client = new XDMessagingClient();
+            IXDListener listener = client.Listeners.GetWindowsMessagingListener();
+            listener.RegisterChannel(channelName);
+            listener.MessageReceived += (o, e) => {
+                if (e.DataGram.Channel == channelName) {
+
+                    TypedDataGram<IEnumerable<string>> obj = e.DataGram;
+
+                    int len = obj.Message.Count();
+                    int i = 0;
+
+                    string[] files = new string[len];
+
+                    foreach (string s in obj.Message) {
+                        files[i] = s;
+                        i++;
+                    }
+
+                    addFilesToList(files);
+                    glacialList.Refresh();
+                }
+            };
         }
     }
 }

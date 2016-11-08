@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SharpShell;
 using SharpShell.Attributes;
 using SharpShell.SharpContextMenu;
+using XDMessaging;
 
 namespace MetaCopy
 {
@@ -33,15 +29,33 @@ namespace MetaCopy
                 Text = "Add to MetaCopy",
             };
 
-            itemCountLines.Click += (sender, args) => CountLines();
+            itemCountLines.Click += (sender, args) => AddToMeta();
             menu.Items.Add(itemCountLines);
 
             return menu;
         }
 
-        private void CountLines(){
-            try{
-                Process p = Process.Start(Environment.GetEnvironmentVariable("MetaCopyPath", EnvironmentVariableTarget.User));
+        private void AddToMeta(){
+            try {
+                Process[] processes = Process.GetProcessesByName("MetaCopy");
+
+                XDMessagingClient client = new XDMessagingClient();
+                IXDBroadcaster broadcaster = client.Broadcasters.GetWindowsMessagingBroadcaster();
+
+                if (processes.Length == 0) {
+                    IXDListener listener = client.Listeners.GetWindowsMessagingListener();
+                    listener.RegisterChannel("MetaStartChannel");
+                    listener.MessageReceived += (o, e) => {
+                        if (e.DataGram.Channel == "MetaStartChannel") {
+                            listener.UnRegisterChannel("MetaStartChannel");
+                            broadcaster.SendToChannel("MetaChannel", SelectedItemPaths);
+                        }
+                    };
+
+                    Process.Start(Environment.GetEnvironmentVariable("MetaCopyPath", EnvironmentVariableTarget.User));
+                }
+
+                broadcaster.SendToChannel("MetaChannel", SelectedItemPaths);
             }
             catch (FileNotFoundException ex){
                 MessageBox.Show("MetaCopy not found.");
