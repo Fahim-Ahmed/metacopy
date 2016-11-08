@@ -35,7 +35,7 @@ namespace MetaCopy {
         private bool isRunning;
 
         private string userPath;
-        private bool deselectMode;
+        private bool deselectMode = true;
 
         private MiniMode mm;
         private PrefWindow pref;
