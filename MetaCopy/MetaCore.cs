@@ -60,11 +60,8 @@ namespace MetaCopy {
             mm.setMain(this);
 
             pref = new PrefWindow();
-            
-            if (Environment.GetEnvironmentVariable(envName, EnvironmentVariableTarget.User) == null){
-                Environment.SetEnvironmentVariable(envName, Application.ExecutablePath, EnvironmentVariableTarget.User);
-            }
 
+            new Thread(new ThreadStart(writePath)).Start();
             startListener();
 
             //Notify MetaCopy is running.
@@ -72,7 +69,15 @@ namespace MetaCopy {
             IXDBroadcaster broadcaster = client.Broadcasters.GetWindowsMessagingBroadcaster();
             broadcaster.SendToChannel("MetaStartChannel", "ProcessStarted");
 
+            string resPath = Path.Combine(Environment.CurrentDirectory, "SharpShell.dll");
+            if (!File.Exists(resPath))
+                System.IO.File.WriteAllBytes(resPath, MetaCopy.Properties.Resources.SharpShell);
+
             //foreach (string s in Environment.GetCommandLineArgs()){ Console.WriteLine(s); }
+        }
+
+        private void writePath() {
+            Environment.SetEnvironmentVariable(envName, Application.ExecutablePath, EnvironmentVariableTarget.User);
         }
 
         private void startWatch(string path) {

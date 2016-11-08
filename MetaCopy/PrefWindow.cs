@@ -27,9 +27,9 @@ namespace MetaCopy {
             server = new MetaCopyExt();
         }
 
-        public void setServer(MetaCopyExt ext){
-            this.server = ext;
-        }
+//        public void setServer(MetaCopyExt ext){
+//            this.server = ext;
+//        }
 
         protected override void WndProc(ref Message m) {
             base.WndProc(ref m);
@@ -45,7 +45,7 @@ namespace MetaCopy {
         }
 
         private void onCloseBtn(object sender, EventArgs e) {
-            Hide();
+            this.Hide();
         }
 
         private void onRegisterBtn(object sender, EventArgs e) {
@@ -57,6 +57,8 @@ namespace MetaCopy {
                 ServerRegistrationManager.InstallServer(server, RegistrationType.OS32Bit, true);
                 ServerRegistrationManager.RegisterServer(server, RegistrationType.OS32Bit);
             }
+
+            this.Hide();
 
             ExplorerManager.RestartExplorer();
         }
@@ -70,6 +72,8 @@ namespace MetaCopy {
                 ServerRegistrationManager.UnregisterServer(server, RegistrationType.OS32Bit);
                 ServerRegistrationManager.UninstallServer(server, RegistrationType.OS32Bit);
             }
+
+            this.Hide();
 
             ExplorerManager.RestartExplorer();
         }
