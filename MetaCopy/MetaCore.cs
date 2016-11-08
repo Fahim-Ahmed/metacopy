@@ -513,8 +513,9 @@ namespace MetaCopy {
                             copyDirectory(sourcePath, destFile);
                         else File.Copy(sourcePath, destFile, true);
 
-                        if (deselectCheck.Checked)
-                            Invoke((MethodInvoker)delegate { item.SubItems[0].Checked = false; });
+                        if (deselectCheck.Checked && !cutmode.Checked) {
+                            Invoke((MethodInvoker) delegate { item.SubItems[0].Checked = false; });
+                        }
 
                         completed++;
                         float progress = (completed / count) * 100;
@@ -549,10 +550,37 @@ namespace MetaCopy {
 
             setStatus("Most probably it is a success.", 1);
 
-            if (cutmode.Checked) deleteFiles();
+            if (cutmode.Checked) {
+                deleteFiles();
+                glacialList.Refresh();
+            }
 
             isRunning = false;
             mm.copyEnd();
+        }
+
+        private void deleteFiles() {
+            try {
+                foreach (GLItem item in glacialList.Items) {
+                    if (item.SubItems[0].Checked) {
+                        var path = item.SubItems[1].Text;
+
+                        if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
+                            Directory.Delete(path);
+                        else File.Delete(path);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+
+            checkExistence();
+        }
+
+        private void deleteFile(GLItem item) {
+            File.Delete(item.SubItems[1].Text);
+            glacialList.Items.Remove(item);
         }
 
         private void addDestPath(string path) {
@@ -585,16 +613,6 @@ namespace MetaCopy {
             glacialListPath.Items.Add(item);
 
             item.SubItems[0].Checked = true;
-        }
-
-        private void deleteFiles() {
-            foreach (GLItem item in glacialList.Items) {
-                if (item.SubItems[0].Checked) {
-                    File.Delete(item.SubItems[1].Text);
-                }
-            }
-
-            checkExistence();
         }
 
         private int getFileCount() {

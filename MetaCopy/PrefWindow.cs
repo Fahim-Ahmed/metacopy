@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using SharpShell.Diagnostics;
@@ -48,34 +49,46 @@ namespace MetaCopy {
             this.Hide();
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = @"BUILTIN\Administrators")]
         private void onRegisterBtn(object sender, EventArgs e) {
-            if (InternalCheckIsWow64()) {
-                ServerRegistrationManager.InstallServer(server, RegistrationType.OS64Bit, true);
-                ServerRegistrationManager.RegisterServer(server, RegistrationType.OS64Bit);
-            }
-            else {
-                ServerRegistrationManager.InstallServer(server, RegistrationType.OS32Bit, true);
-                ServerRegistrationManager.RegisterServer(server, RegistrationType.OS32Bit);
-            }
+            try {
+                if (InternalCheckIsWow64()) {
+                    ServerRegistrationManager.InstallServer(server, RegistrationType.OS64Bit, true);
+                    ServerRegistrationManager.RegisterServer(server, RegistrationType.OS64Bit);
+                }
+                else {
+                    ServerRegistrationManager.InstallServer(server, RegistrationType.OS32Bit, true);
+                    ServerRegistrationManager.RegisterServer(server, RegistrationType.OS32Bit);
+                }
 
-            this.Hide();
+                this.Hide();
 
-            ExplorerManager.RestartExplorer();
+                ExplorerManager.RestartExplorer();
+            } catch (Exception ex) {
+                MessageBox.Show("Require admin access.");
+            }
+            
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = @"BUILTIN\Administrators")]
         private void onDeregisterBtn(object sender, EventArgs e) {
-            if (InternalCheckIsWow64()) {
-                ServerRegistrationManager.UnregisterServer(server, RegistrationType.OS64Bit);
-                ServerRegistrationManager.UninstallServer(server, RegistrationType.OS64Bit);
-            }
-            else {
-                ServerRegistrationManager.UnregisterServer(server, RegistrationType.OS32Bit);
-                ServerRegistrationManager.UninstallServer(server, RegistrationType.OS32Bit);
-            }
+            try {
+                if (InternalCheckIsWow64()) {
+                    ServerRegistrationManager.UnregisterServer(server, RegistrationType.OS64Bit);
+                    ServerRegistrationManager.UninstallServer(server, RegistrationType.OS64Bit);
+                }
+                else {
+                    ServerRegistrationManager.UnregisterServer(server, RegistrationType.OS32Bit);
+                    ServerRegistrationManager.UninstallServer(server, RegistrationType.OS32Bit);
+                }
 
-            this.Hide();
+                this.Hide();
 
-            ExplorerManager.RestartExplorer();
+                ExplorerManager.RestartExplorer();
+            }
+            catch (Exception ex) {
+                MessageBox.Show("Require admin access.");
+            }
         }
 
         [DllImport("kernel32.dll", SetLastError = true, CallingConvention = CallingConvention.Winapi)]
