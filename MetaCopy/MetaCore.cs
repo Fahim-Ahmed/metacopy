@@ -42,6 +42,7 @@ namespace MetaCopy {
         private MetaCopyExt ext;
 
         public MetaCore() {
+
             InitializeComponent();
 
             glacialList.BringToFront();
@@ -71,7 +72,7 @@ namespace MetaCopy {
 
             string resPath = Path.Combine(Environment.CurrentDirectory, "SharpShell.dll");
             if (!File.Exists(resPath))
-                System.IO.File.WriteAllBytes(resPath, MetaCopy.Properties.Resources.SharpShell);
+                File.WriteAllBytes(resPath, MetaCopy.Properties.Resources.SharpShell);
 
             //foreach (string s in Environment.GetCommandLineArgs()){ Console.WriteLine(s); }
         }
@@ -832,9 +833,6 @@ namespace MetaCopy {
             pref.StartPosition = FormStartPosition.Manual;
             pref.DesktopLocation = new Point(fx + Size.Width + 8, fy);
             pref.Show();
-
-            deselectMode = deselectCheck.Checked;
-            deselectCheck.Checked = false;
         }
 
         private void startListener() {

@@ -32,12 +32,12 @@ namespace MetaCopy
         private void InitializeComponent()
         {
             System.Windows.Forms.Label label1;
-            MetaCopy.Components.CustomLabel customLabel1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MetaCore));
             GlacialComponents.Controls.GLColumn glColumn1 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn2 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn3 = new GlacialComponents.Controls.GLColumn();
             GlacialComponents.Controls.GLColumn glColumn4 = new GlacialComponents.Controls.GLColumn();
+            MetaCopy.Components.CustomLabel customLabel1;
             this.panelTitle = new System.Windows.Forms.Panel();
             this.button11 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
@@ -89,19 +89,6 @@ namespace MetaCopy
             label1.TabIndex = 2;
             label1.Text = "Watch Folder";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // customLabel1
-            // 
-            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
-            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
-            customLabel1.Location = new System.Drawing.Point(0, 0);
-            customLabel1.Name = "customLabel1";
-            customLabel1.Size = new System.Drawing.Size(120, 32);
-            customLabel1.TabIndex = 0;
-            customLabel1.Text = "METACOPY";
-            customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             // 
             // panelTitle
             // 
@@ -204,7 +191,7 @@ namespace MetaCopy
             this.cutmode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.cutmode.Location = new System.Drawing.Point(481, 676);
             this.cutmode.Name = "cutmode";
-            this.cutmode.Size = new System.Drawing.Size(85, 21);
+            this.cutmode.Size = new System.Drawing.Size(84, 21);
             this.cutmode.TabIndex = 17;
             this.cutmode.Text = "Cut Mode";
             this.cutmode.UseVisualStyleBackColor = true;
@@ -439,7 +426,7 @@ namespace MetaCopy
             this.autoCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.autoCheck.Location = new System.Drawing.Point(139, 676);
             this.autoCheck.Name = "autoCheck";
-            this.autoCheck.Size = new System.Drawing.Size(141, 21);
+            this.autoCheck.Size = new System.Drawing.Size(140, 21);
             this.autoCheck.TabIndex = 19;
             this.autoCheck.Text = "Auto Copy on Drop";
             this.autoCheck.UseVisualStyleBackColor = true;
@@ -453,7 +440,7 @@ namespace MetaCopy
             this.deselectCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.deselectCheck.Location = new System.Drawing.Point(286, 676);
             this.deselectCheck.Name = "deselectCheck";
-            this.deselectCheck.Size = new System.Drawing.Size(189, 21);
+            this.deselectCheck.Size = new System.Drawing.Size(188, 21);
             this.deselectCheck.TabIndex = 20;
             this.deselectCheck.Text = "Deselect on Copy Complete";
             this.deselectCheck.UseVisualStyleBackColor = true;
@@ -696,6 +683,19 @@ namespace MetaCopy
             this.button1.Text = "Select All";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.onButtonClick);
+            // 
+            // customLabel1
+            // 
+            customLabel1.Dock = System.Windows.Forms.DockStyle.Left;
+            customLabel1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            customLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(42)))), ((int)(((byte)(52)))));
+            customLabel1.Location = new System.Drawing.Point(0, 0);
+            customLabel1.Name = "customLabel1";
+            customLabel1.Size = new System.Drawing.Size(120, 32);
+            customLabel1.TabIndex = 0;
+            customLabel1.Text = "METACOPY";
+            customLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            customLabel1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
             // 
             // MetaCore
             // 
