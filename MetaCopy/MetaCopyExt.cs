@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using SharpShell.Attributes;
@@ -42,8 +43,10 @@ namespace MetaCopy
                 IXDBroadcaster broadcaster = client.Broadcasters.GetWindowsMessagingBroadcaster();
 
                 if (processes.Length == 0) {
+
                     IXDListener listener = client.Listeners.GetWindowsMessagingListener();
                     listener.RegisterChannel("MetaStartChannel");
+
                     listener.MessageReceived += (o, e) => {
                         if (e.DataGram.Channel == "MetaStartChannel") {
                             listener.UnRegisterChannel("MetaStartChannel");
@@ -53,8 +56,10 @@ namespace MetaCopy
 
                     Process.Start(Environment.GetEnvironmentVariable("MetaCopyPath", EnvironmentVariableTarget.User));
                 }
-
-                broadcaster.SendToChannel("MetaChannel", SelectedItemPaths);
+                else {
+                    broadcaster = client.Broadcasters.GetWindowsMessagingBroadcaster();
+                    broadcaster.SendToChannel("MetaChannel", SelectedItemPaths);
+                }
             }
             catch (FileNotFoundException ex){
                 MessageBox.Show("MetaCopy not found.");

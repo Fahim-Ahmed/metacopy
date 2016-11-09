@@ -47,9 +47,10 @@ namespace MetaCopy {
 
         private void onCloseBtn(object sender, EventArgs e) {
             this.Hide();
+           //Application.Restart();
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = @"BUILTIN\Administrators")]
+        //[PrincipalPermission(SecurityAction.Demand, Role = @"BUILTIN\Administrators")]
         private void onRegisterBtn(object sender, EventArgs e) {
             try {
                 if (InternalCheckIsWow64()) {
@@ -62,15 +63,18 @@ namespace MetaCopy {
                 }
 
                 this.Hide();
-
                 ExplorerManager.RestartExplorer();
+//              Application.Restart();
             } catch (Exception ex) {
-                MessageBox.Show("Require admin access.");
+                DialogResult res = MessageBox.Show("Require admin access.");
+//                if (res == DialogResult.Yes) {
+//                    elevateToAdmin();
+//                }
             }
             
         }
 
-        [PrincipalPermission(SecurityAction.Demand, Role = @"BUILTIN\Administrators")]
+        //[PrincipalPermission(SecurityAction.Demand, Role = @"BUILTIN\Administrators")]
         private void onDeregisterBtn(object sender, EventArgs e) {
             try {
                 if (InternalCheckIsWow64()) {
@@ -83,11 +87,15 @@ namespace MetaCopy {
                 }
 
                 this.Hide();
-
                 ExplorerManager.RestartExplorer();
+                //Application.Restart();
             }
             catch (Exception ex) {
                 MessageBox.Show("Require admin access.");
+                //                DialogResult res = MessageBox.Show("Require admin access. Request admin access?", "Warning", MessageBoxButtons.YesNo);
+                //                if (res == DialogResult.Yes) {
+                //                    elevateToAdmin();
+                //                }
             }
         }
 
@@ -97,6 +105,25 @@ namespace MetaCopy {
             [In] IntPtr hProcess,
             [Out] out bool wow64Process
         );
+
+        private void elevateToAdmin() {
+            ProcessStartInfo proc = new ProcessStartInfo();
+            proc.UseShellExecute = true;
+            proc.WorkingDirectory = Environment.CurrentDirectory;
+            proc.FileName = Application.ExecutablePath;
+            proc.Verb = "runas";
+
+            try {
+                Process.Start(proc);
+            }
+            catch {
+                // The user refused the elevation.
+                // Do nothing and return directly ...
+                return;
+            }
+
+            Application.Exit();  // Quit itself
+        }
 
         public static bool InternalCheckIsWow64() {
             if ((Environment.OSVersion.Version.Major == 5 && Environment.OSVersion.Version.Minor >= 1) ||

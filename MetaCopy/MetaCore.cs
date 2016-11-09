@@ -41,6 +41,9 @@ namespace MetaCopy {
         private PrefWindow pref;
         private MetaCopyExt ext;
 
+        private XDMessagingClient client;
+        private IXDListener listener;
+
         public MetaCore() {
 
             InitializeComponent();
@@ -65,16 +68,68 @@ namespace MetaCopy {
             new Thread(new ThreadStart(writePath)).Start();
             startListener();
 
+            extractSharpShell();
+
             //Notify MetaCopy is running.
-            XDMessagingClient client = new XDMessagingClient();
+            client = new XDMessagingClient();
             IXDBroadcaster broadcaster = client.Broadcasters.GetWindowsMessagingBroadcaster();
             broadcaster.SendToChannel("MetaStartChannel", "ProcessStarted");
 
-            string resPath = Path.Combine(Environment.CurrentDirectory, "SharpShell.dll");
-            if (!File.Exists(resPath))
-                File.WriteAllBytes(resPath, MetaCopy.Properties.Resources.SharpShell);
+            startListener();
+
+            checkIntegrity();
 
             //foreach (string s in Environment.GetCommandLineArgs()){ Console.WriteLine(s); }
+        }
+
+        private void extractSharpShell() {
+            try {
+                string resPath = Path.Combine(Environment.CurrentDirectory, "SharpShell.dll");
+                if (!File.Exists(resPath))
+                    File.WriteAllBytes(resPath, MetaCopy.Properties.Resources.SharpShell);
+            }
+            catch (UnauthorizedAccessException ex) {
+                //meh
+            }
+        }
+
+        private void checkIntegrity() {
+            int expInt = ProcessIntegrityChecker.GetExplorerIntegrityLevel();
+            int mainInt = ProcessIntegrityChecker.GetProcessIntegrityLevel();
+
+            if (mainInt > expInt) {
+                //Show Warning
+                MessageBox.Show("This app integrity level is higher than your system (you probably run this app as admin.) " +
+                                "Drag and Drop will not work, thanks to Microsoft." +
+                                " Please restart the app in normal mode (not run as administrator.)");
+            }
+
+//            switch (mainInt) {
+//                case NativeMethods.SECURITY_MANDATORY_UNTRUSTED_RID:
+//                    //this.lbIntegrityLevel.Text = "Untrusted"; break;
+//                    Console.WriteLine("Untrusted");
+//                    break;
+//                case NativeMethods.SECURITY_MANDATORY_LOW_RID:
+//                    //this.lbIntegrityLevel.Text = "Low"; break;
+//                    Console.WriteLine("Low");
+//                    break;
+//                case NativeMethods.SECURITY_MANDATORY_MEDIUM_RID:
+//                    //this.lbIntegrityLevel.Text = "Medium"; break;
+//                    Console.WriteLine("Medium");
+//                    break;
+//                case NativeMethods.SECURITY_MANDATORY_HIGH_RID:
+//                    //this.lbIntegrityLevel.Text = "High"; break;
+//                    Console.WriteLine("High");
+//                    break;
+//                case NativeMethods.SECURITY_MANDATORY_SYSTEM_RID:
+//                    //this.lbIntegrityLevel.Text = "System"; break;
+//                    Console.WriteLine("System");
+//                    break;
+//                default:
+//                    Console.WriteLine("Unknown");
+//                    break;
+//                    //this.lbIntegrityLevel.Text = "Unknown"; break;
+//            }
         }
 
         private void writePath() {
@@ -836,10 +891,13 @@ namespace MetaCopy {
         }
 
         private void startListener() {
-            XDMessagingClient client = new XDMessagingClient();
-            IXDListener listener = client.Listeners.GetWindowsMessagingListener();
+
+            client = new XDMessagingClient();
+            listener = client.Listeners.GetWindowsMessagingListener();
             listener.RegisterChannel(channelName);
+
             listener.MessageReceived += (o, e) => {
+
                 if (e.DataGram.Channel == channelName) {
 
                     TypedDataGram<IEnumerable<string>> obj = e.DataGram;
@@ -858,6 +916,15 @@ namespace MetaCopy {
                     glacialList.Refresh();
                 }
             };
+        }
+
+        private void onFocusEnter(object sender, EventArgs e) {
+//            //Notify MetaCopy is running.
+//            XDMessagingClient client = new XDMessagingClient();
+//            IXDBroadcaster broadcaster = client.Broadcasters.GetWindowsMessagingBroadcaster();
+//            broadcaster.SendToChannel("MetaStartChannel", "ProcessStarted");
+//
+//            startListener();
         }
     }
 }

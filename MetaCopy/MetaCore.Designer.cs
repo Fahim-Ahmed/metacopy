@@ -191,7 +191,7 @@ namespace MetaCopy
             this.cutmode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.cutmode.Location = new System.Drawing.Point(481, 676);
             this.cutmode.Name = "cutmode";
-            this.cutmode.Size = new System.Drawing.Size(84, 21);
+            this.cutmode.Size = new System.Drawing.Size(85, 21);
             this.cutmode.TabIndex = 17;
             this.cutmode.Text = "Cut Mode";
             this.cutmode.UseVisualStyleBackColor = true;
@@ -426,7 +426,7 @@ namespace MetaCopy
             this.autoCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.autoCheck.Location = new System.Drawing.Point(139, 676);
             this.autoCheck.Name = "autoCheck";
-            this.autoCheck.Size = new System.Drawing.Size(140, 21);
+            this.autoCheck.Size = new System.Drawing.Size(141, 21);
             this.autoCheck.TabIndex = 19;
             this.autoCheck.Text = "Auto Copy on Drop";
             this.autoCheck.UseVisualStyleBackColor = true;
@@ -440,7 +440,7 @@ namespace MetaCopy
             this.deselectCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.deselectCheck.Location = new System.Drawing.Point(286, 676);
             this.deselectCheck.Name = "deselectCheck";
-            this.deselectCheck.Size = new System.Drawing.Size(188, 21);
+            this.deselectCheck.Size = new System.Drawing.Size(189, 21);
             this.deselectCheck.TabIndex = 20;
             this.deselectCheck.Text = "Deselect on Copy Complete";
             this.deselectCheck.UseVisualStyleBackColor = true;
