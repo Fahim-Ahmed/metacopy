@@ -60,6 +60,7 @@ namespace MetaCopy
             this.button9 = new System.Windows.Forms.Button();
             this.pastebox = new System.Windows.Forms.TextBox();
             this.button10 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
             this.btnCopy = new MetaCopy.Components.CustomButton();
             this.btnRem = new MetaCopy.Components.CustomButton();
             this.btnRemAll = new MetaCopy.Components.CustomButton();
@@ -173,11 +174,11 @@ namespace MetaCopy
             this.btnOpenPath.BackColor = System.Drawing.Color.Transparent;
             this.btnOpenPath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnOpenPath.FlatAppearance.BorderSize = 0;
-            this.btnOpenPath.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(32)))), ((int)(((byte)(38)))));
+            this.btnOpenPath.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnOpenPath.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnOpenPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenPath.Image = ((System.Drawing.Image)(resources.GetObject("btnOpenPath.Image")));
-            this.btnOpenPath.Location = new System.Drawing.Point(540, 57);
+            this.btnOpenPath.Location = new System.Drawing.Point(504, 58);
             this.btnOpenPath.Name = "btnOpenPath";
             this.btnOpenPath.Size = new System.Drawing.Size(26, 26);
             this.btnOpenPath.TabIndex = 3;
@@ -191,7 +192,7 @@ namespace MetaCopy
             this.cutmode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.cutmode.Location = new System.Drawing.Point(481, 676);
             this.cutmode.Name = "cutmode";
-            this.cutmode.Size = new System.Drawing.Size(85, 21);
+            this.cutmode.Size = new System.Drawing.Size(84, 21);
             this.cutmode.TabIndex = 17;
             this.cutmode.Text = "Cut Mode";
             this.cutmode.UseVisualStyleBackColor = true;
@@ -220,7 +221,7 @@ namespace MetaCopy
             this.panel1.Location = new System.Drawing.Point(131, 55);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(2);
-            this.panel1.Size = new System.Drawing.Size(403, 32);
+            this.panel1.Size = new System.Drawing.Size(364, 32);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.onPaint);
             this.panel1.Resize += new System.EventHandler(this.onPanelResize);
@@ -231,7 +232,7 @@ namespace MetaCopy
             this.button6.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
-            this.button6.Location = new System.Drawing.Point(375, 4);
+            this.button6.Location = new System.Drawing.Point(336, 4);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(23, 23);
             this.button6.TabIndex = 1;
@@ -248,7 +249,7 @@ namespace MetaCopy
             this.pathLabel.Location = new System.Drawing.Point(8, 7);
             this.pathLabel.Name = "pathLabel";
             this.pathLabel.ReadOnly = true;
-            this.pathLabel.Size = new System.Drawing.Size(361, 18);
+            this.pathLabel.Size = new System.Drawing.Size(325, 18);
             this.pathLabel.TabIndex = 0;
             this.pathLabel.TabStop = false;
             this.pathLabel.Text = "add a watch folder";
@@ -426,7 +427,7 @@ namespace MetaCopy
             this.autoCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.autoCheck.Location = new System.Drawing.Point(139, 676);
             this.autoCheck.Name = "autoCheck";
-            this.autoCheck.Size = new System.Drawing.Size(141, 21);
+            this.autoCheck.Size = new System.Drawing.Size(140, 21);
             this.autoCheck.TabIndex = 19;
             this.autoCheck.Text = "Auto Copy on Drop";
             this.autoCheck.UseVisualStyleBackColor = true;
@@ -440,7 +441,7 @@ namespace MetaCopy
             this.deselectCheck.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(151)))), ((int)(((byte)(166)))));
             this.deselectCheck.Location = new System.Drawing.Point(286, 676);
             this.deselectCheck.Name = "deselectCheck";
-            this.deselectCheck.Size = new System.Drawing.Size(189, 21);
+            this.deselectCheck.Size = new System.Drawing.Size(188, 21);
             this.deselectCheck.TabIndex = 20;
             this.deselectCheck.Text = "Deselect on Copy Complete";
             this.deselectCheck.UseVisualStyleBackColor = true;
@@ -506,6 +507,22 @@ namespace MetaCopy
             this.button10.TabIndex = 21;
             this.button10.UseVisualStyleBackColor = false;
             this.button10.Click += new System.EventHandler(this.onPasteBtn);
+            // 
+            // button12
+            // 
+            this.button12.BackColor = System.Drawing.Color.Transparent;
+            this.button12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.button12.FlatAppearance.BorderSize = 0;
+            this.button12.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.button12.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button12.Image = ((System.Drawing.Image)(resources.GetObject("button12.Image")));
+            this.button12.Location = new System.Drawing.Point(537, 58);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(27, 27);
+            this.button12.TabIndex = 22;
+            this.button12.UseVisualStyleBackColor = false;
+            this.button12.Click += new System.EventHandler(this.onFileAddBtnClick);
             // 
             // btnCopy
             // 
@@ -704,6 +721,7 @@ namespace MetaCopy
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(36)))), ((int)(((byte)(43)))));
             this.ClientSize = new System.Drawing.Size(598, 746);
             this.ControlBox = false;
+            this.Controls.Add(this.button12);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.deselectCheck);
@@ -735,6 +753,7 @@ namespace MetaCopy
             this.Name = "MetaCore";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.onClosing);
             this.Shown += new System.EventHandler(this.onFormShow);
+            this.Move += new System.EventHandler(this.onLayoutMove);
             this.panelTitle.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -781,6 +800,7 @@ namespace MetaCopy
         private System.Windows.Forms.TextBox pastebox;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button12;
     }
 }
 

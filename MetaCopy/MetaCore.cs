@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Linq;
 using GlacialComponents.Controls;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using XDMessaging;
 using XDMessaging.Messages;
 
@@ -424,13 +425,19 @@ namespace MetaCopy {
                     if (pastebox.Text != pastehinttext)
                         onPasteBtn(this, null);
                     else {
-                        fbd.ShowDialog();
+                        CommonOpenFileDialog fd = new CommonOpenFileDialog();
+                        fd.Multiselect = true;
+                        fd.IsFolderPicker = true;
+                        fd.ShowDialog();
 
-                        if (!string.IsNullOrWhiteSpace(fbd.SelectedPath))
-                        {
-                            addDestPath(fbd.SelectedPath);
-                            glacialListPath.Refresh();
+                        //if (!string.IsNullOrWhiteSpace(fbd.SelectedPath)){
+
+                        foreach (string s in fd.FileNames){
+                            addDestPath(s);
                         }
+                            
+                        glacialListPath.Refresh();
+                        //}
                     }
                     break;
             }
@@ -918,13 +925,30 @@ namespace MetaCopy {
             };
         }
 
-        private void onFocusEnter(object sender, EventArgs e) {
-//            //Notify MetaCopy is running.
-//            XDMessagingClient client = new XDMessagingClient();
-//            IXDBroadcaster broadcaster = client.Broadcasters.GetWindowsMessagingBroadcaster();
-//            broadcaster.SendToChannel("MetaStartChannel", "ProcessStarted");
-//
-//            startListener();
+        private void onLayoutMove(object sender, EventArgs e) {
+            int fx = DesktopLocation.X;
+            int fy = DesktopLocation.Y;
+
+            pref.DesktopLocation = new Point(fx + Size.Width + 8, fy);
+        }
+
+        private void onFileAddBtnClick(object sender, EventArgs e) {
+            //            OpenFileDialog fd = new OpenFileDialog();
+            //            fd.Multiselect = true;
+            //            fd.ShowDialog();
+
+            try{
+                CommonOpenFileDialog fd = new CommonOpenFileDialog();
+                fd.Multiselect = true;
+                fd.IsFolderPicker = true;
+                fd.ShowDialog();
+
+                string[] files = fd.FileNames.ToArray();
+                addFilesToList(files);
+            }
+            catch (Exception ex){
+                //meh
+            }
         }
     }
 }

@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using SharpShell;
-using SharpShell.SharpPropertySheet;
 
 namespace MetaCopy {
     /// <summary>
